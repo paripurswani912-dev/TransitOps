@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { db } from '../firebase';
 import { collection, onSnapshot } from 'firebase/firestore';
+import { jsPDF } from 'jspdf';
+import autoTable from 'jspdf-autotable';
 import { REVENUE_PER_TRIP } from '../constants/finance';
 import { 
   TrendingUp, 
@@ -292,6 +294,124 @@ export default function Analytics() {
     document.body.removeChild(link);
   };
 
+  // --- EXPORT PDF ---
+  const handleExportPDF = () => {
+    const doc = new jsPDF();
+    
+    // Title
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(20);
+    doc.setTextColor(17, 24, 39); // Gray-900
+    doc.text('TransitOps — Fleet Analytics Report', 14, 22);
+
+    // Generated Date
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(9);
+    doc.setTextColor(107, 114, 128); // Gray-500
+    const currentDate = new Date().toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+    doc.text(`Generated: ${currentDate}`, 14, 28);
+
+    // Divider Line
+    doc.setDrawColor(229, 231, 235); // Gray-200
+    doc.setLineWidth(0.5);
+    doc.line(14, 32, 196, 32);
+
+    // KPI Section Header
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(12);
+    doc.setTextColor(17, 24, 39);
+    doc.text('Key Performance Indicators', 14, 42);
+
+    // KPI Background Box
+    doc.setFillColor(249, 250, 251); // Gray-50
+    doc.setDrawColor(229, 231, 235); // Gray-200
+    doc.setLineWidth(0.5);
+    doc.rect(14, 46, 182, 36, 'FD'); // Fill and border
+
+    // Divider inside box
+    doc.line(105, 50, 105, 78);
+
+    // KPI Content
+    doc.setFontSize(10);
+
+    // Column 1
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(75, 85, 99); // Gray-600
+    doc.text('Fuel Efficiency:', 20, 56);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(17, 24, 39);
+    doc.text(`${fuelEfficiency.toFixed(1)} km/l`, 60, 56);
+
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(75, 85, 99);
+    doc.text('Fleet Utilization:', 20, 68);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(17, 24, 39);
+    doc.text(`${fleetUtilization.toFixed(1)}%`, 60, 68);
+
+    // Column 2
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(75, 85, 99);
+    doc.text('Operational Cost:', 110, 56);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(17, 24, 39);
+    doc.text(`$${totalOperationalCost.toLocaleString(undefined, { minimumFractionDigits: 2 })}`, 155, 56);
+
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(75, 85, 99);
+    doc.text('Avg Vehicle ROI:', 110, 68);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(17, 24, 39);
+    doc.text(`${averageROI.toFixed(1)}%`, 155, 68);
+
+    // Table Section Header
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(12);
+    doc.setTextColor(17, 24, 39);
+    doc.text('Top Costliest Vehicles', 14, 90);
+
+    // Table using autoTable
+    autoTable(doc, {
+      startY: 94,
+      head: [['Rank', 'Registration No', 'Model/Name', 'Total Operational Cost']],
+      body: topCostliestVehicles.map((vehicle, index) => [
+        index + 1,
+        vehicle.regNo,
+        vehicle.name,
+        `$${vehicle.totalCost.toLocaleString(undefined, { minimumFractionDigits: 2 })}`
+      ]),
+      theme: 'striped',
+      headStyles: {
+        fillColor: [71, 85, 105], // Slate-600 (slate header)
+        textColor: [255, 255, 255],
+        fontStyle: 'bold'
+      },
+      alternateRowStyles: {
+        fillColor: [249, 250, 251] // Slate-50 / Gray-50 alternating row shading
+      },
+      styles: {
+        font: 'helvetica',
+        fontSize: 9,
+        cellPadding: 4
+      },
+      columnStyles: {
+        0: { cellWidth: 20 },
+        1: { cellWidth: 40 },
+        2: { cellWidth: 60 },
+        3: { cellWidth: 62, halign: 'right' }
+      }
+    });
+
+    // Save/Download PDF
+    doc.save('transitops-report.pdf');
+  };
+
   return (
     <div className="space-y-6">
       
@@ -310,11 +430,11 @@ export default function Analytics() {
             <span>Export CSV</span>
           </button>
           <button
-            disabled
-            className="inline-flex items-center gap-2 rounded-xl bg-gray-100 px-4 py-2.5 text-xs font-bold text-gray-400 border border-gray-200 cursor-not-allowed font-sans"
-            title="PDF exports are coming soon"
+            onClick={handleExportPDF}
+            className="inline-flex items-center gap-2 rounded-xl bg-amber-500 hover:bg-amber-600 px-4 py-2.5 text-xs font-bold text-gray-900 shadow-sm transition-all cursor-pointer font-sans"
           >
-            <span>Export PDF (Coming Soon)</span>
+            <Download className="h-4 w-4" />
+            <span>Export PDF</span>
           </button>
         </div>
       </div>
