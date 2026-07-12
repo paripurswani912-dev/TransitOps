@@ -13,7 +13,6 @@ import {
   Settings,
   LogOut,
   ShieldAlert,
-  Search,
   Sun,
   Moon
 } from 'lucide-react';
@@ -155,19 +154,7 @@ export const DashboardLayout = ({ children }) => {
       <div className="flex flex-1 flex-col overflow-hidden">
         {/* Top Header */}
         <header className="flex h-16 items-center justify-between border-b border-gray-200 bg-white px-8 dark:bg-slate-900 dark:border-slate-800">
-          {/* Search input (left) */}
-          <div className="flex items-center flex-1 max-w-xs md:max-w-md">
-            <div className="relative w-full">
-              <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
-                <Search className="h-4 w-4" />
-              </span>
-              <input
-                type="text"
-                placeholder="Search resources, vehicles..."
-                className="w-full rounded-2xl border border-gray-200 bg-gray-50/50 py-2 pl-10 pr-4 text-sm text-gray-900 dark:text-slate-100 placeholder-gray-400 dark:placeholder-gray-500 bg-white dark:bg-slate-800 outline-none transition-all focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 font-sans"
-              />
-            </div>
-          </div>
+          <div></div>
 
           {/* User Profile Info (right) */}
           <div className="flex items-center space-x-3.5">
