@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { db } from '../firebase';
+import { db, storage } from '../firebase';
 import { 
   collection, 
   doc, 
@@ -9,6 +9,7 @@ import {
   setDoc, 
   updateDoc 
 } from 'firebase/firestore';
+import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { RBAC_MATRIX } from '../constants/rbac';
 import { 
   Plus, 
@@ -16,7 +17,12 @@ import {
   X, 
   Loader2, 
   AlertCircle, 
-  Truck 
+  Truck,
+  Paperclip,
+  Download,
+  Trash2,
+  UploadCloud,
+  FileText
 } from 'lucide-react';
 
 // Default mock vehicles if none exist in localStorage
@@ -285,6 +291,143 @@ export default function Fleet() {
     }
   };
 
+  // Document Upload and Management Handlers
+  const [isUploadingDoc, setIsUploadingDoc] = useState(false);
+
+  const handleUploadDocument = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setIsUploadingDoc(true);
+    setValidationError('');
+
+    try {
+      let docUrl = '';
+      const uploadedAt = new Date().toISOString();
+
+      if (isMock) {
+        // Mock Mode: Convert file to Base64 data URL
+        const reader = new FileReader();
+        docUrl = await new Promise((resolve, reject) => {
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = (err) => reject(err);
+          reader.readAsDataURL(file);
+        });
+
+        const newDoc = {
+          name: file.name,
+          url: docUrl,
+          uploadedAt
+        };
+
+        // Update local storage mock vehicles list
+        const storedVehicles = localStorage.getItem('mock_vehicles');
+        if (storedVehicles) {
+          const list = JSON.parse(storedVehicles);
+          const updated = list.map((v) => {
+            if (v.regNo === editingVehicle.regNo) {
+              const currentDocs = v.documents || [];
+              return { ...v, documents: [...currentDocs, newDoc] };
+            }
+            return v;
+          });
+          localStorage.setItem('mock_vehicles', JSON.stringify(updated));
+          // Update local state and trigger sync
+          const match = updated.find((v) => v.regNo === editingVehicle.regNo);
+          setEditingVehicle(match);
+          window.dispatchEvent(new Event('mock-vehicles-updated'));
+        }
+      } else {
+        // Firebase Production Mode
+        const storageRef = ref(storage, `vehicles/${editingVehicle.regNo}/documents/${file.name}`);
+        const snapshot = await uploadBytes(storageRef, file);
+        docUrl = await getDownloadURL(snapshot.ref);
+
+        const newDoc = {
+          name: file.name,
+          url: docUrl,
+          uploadedAt
+        };
+
+        // Update Firestore doc metadata array
+        const vehicleRef = doc(db, 'vehicles', editingVehicle.regNo);
+        const currentDocs = editingVehicle.documents || [];
+        const updatedDocs = [...currentDocs, newDoc];
+        await updateDoc(vehicleRef, {
+          documents: updatedDocs
+        });
+        
+        // Update local state in drawer
+        setEditingVehicle({
+          ...editingVehicle,
+          documents: updatedDocs
+        });
+      }
+    } catch (err) {
+      console.error('Error uploading document:', err);
+      setValidationError('Failed to upload document. Please try again.');
+    } finally {
+      setIsUploadingDoc(false);
+      e.target.value = '';
+    }
+  };
+
+  const handleDeleteDocument = async (docToDelete) => {
+    if (!window.confirm(`Are you sure you want to delete "${docToDelete.name}"?`)) return;
+
+    setValidationError('');
+    try {
+      if (isMock) {
+        // Mock Mode: Delete from local storage
+        const storedVehicles = localStorage.getItem('mock_vehicles');
+        if (storedVehicles) {
+          const list = JSON.parse(storedVehicles);
+          const updated = list.map((v) => {
+            if (v.regNo === editingVehicle.regNo) {
+              const currentDocs = v.documents || [];
+              return { 
+                ...v, 
+                documents: currentDocs.filter((d) => d.name !== docToDelete.name || d.uploadedAt !== docToDelete.uploadedAt) 
+              };
+            }
+            return v;
+          });
+          localStorage.setItem('mock_vehicles', JSON.stringify(updated));
+          const match = updated.find((v) => v.regNo === editingVehicle.regNo);
+          setEditingVehicle(match);
+          window.dispatchEvent(new Event('mock-vehicles-updated'));
+        }
+      } else {
+        // Firebase Production Mode
+        try {
+          const storageRef = ref(storage, `vehicles/${editingVehicle.regNo}/documents/${docToDelete.name}`);
+          await deleteObject(storageRef);
+        } catch (storageErr) {
+          console.warn('Storage file deletion skipped or failed:', storageErr);
+        }
+
+        // Delete metadata array from Firestore
+        const vehicleRef = doc(db, 'vehicles', editingVehicle.regNo);
+        const currentDocs = editingVehicle.documents || [];
+        const updatedDocs = currentDocs.filter(
+          (d) => d.name !== docToDelete.name || d.uploadedAt !== docToDelete.uploadedAt
+        );
+        await updateDoc(vehicleRef, {
+          documents: updatedDocs
+        });
+
+        // Update local drawer state
+        setEditingVehicle({
+          ...editingVehicle,
+          documents: updatedDocs
+        });
+      }
+    } catch (err) {
+      console.error('Error deleting document:', err);
+      setValidationError('Failed to delete document. Please try again.');
+    }
+  };
+
   // 3. Magnetic Hover Effect Utility
   const handleMouseMove = (e) => {
     if (!btnRef.current) return;
@@ -454,7 +597,20 @@ export default function Fleet() {
                     className={`hover:bg-amber-50/10 transition-colors duration-150 ${isReadOnly ? 'cursor-default' : 'cursor-pointer'}`}
                   >
                     {/* Reg No in bold JetBrains Mono */}
-                    <td className="px-6 py-4 font-mono font-bold text-gray-900 whitespace-nowrap">{v.regNo}</td>
+                    <td className="px-6 py-4 font-mono font-bold text-gray-900 whitespace-nowrap">
+                      <div className="flex items-center gap-1.5">
+                        <span>{v.regNo}</span>
+                        {v.documents && v.documents.length > 0 && (
+                          <span 
+                            className="inline-flex items-center gap-0.5 rounded px-1.5 py-0.5 text-[10px] font-bold bg-amber-500/10 text-amber-600 border border-amber-500/20"
+                            title={`${v.documents.length} document(s) uploaded`}
+                          >
+                            <Paperclip className="h-3 w-3 shrink-0" />
+                            <span>{v.documents.length}</span>
+                          </span>
+                        )}
+                      </div>
+                    </td>
                     
                     {/* Name / Model display */}
                     <td className="px-6 py-4 text-gray-800 whitespace-nowrap">
@@ -662,6 +818,86 @@ export default function Fleet() {
                   <option value="Retired">Retired</option>
                 </select>
               </div>
+
+              {/* Documents Section (Only if editing/viewing an existing vehicle) */}
+              {editingVehicle && (
+                <div className="pt-5 border-t border-gray-150 space-y-4">
+                  <div className="flex items-center justify-between">
+                    <h4 className="text-sm font-bold text-gray-900 font-sans">Vehicle Documents</h4>
+                    <span className="text-[10px] text-gray-400 font-mono">PDF, PNG, JPG</span>
+                  </div>
+
+                  {/* Document Upload Area */}
+                  <div className="border border-dashed border-gray-300 rounded-xl p-4 bg-gray-50/50 flex flex-col items-center justify-center text-center space-y-2 relative">
+                    {isUploadingDoc ? (
+                      <div className="flex flex-col items-center gap-1.5 py-2">
+                        <Loader2 className="h-6 w-6 animate-spin text-amber-500" />
+                        <span className="text-xs font-semibold text-gray-500 font-mono">Uploading to storage...</span>
+                      </div>
+                    ) : (
+                      <>
+                        <UploadCloud className="h-6 w-6 text-gray-400" />
+                        <div className="text-xs text-gray-600">
+                          <label htmlFor="doc-upload" className="cursor-pointer font-semibold text-amber-600 hover:text-amber-700 underline">
+                            Upload a file
+                          </label>
+                          <span className="text-gray-400"> or drag and drop</span>
+                        </div>
+                        <input
+                          id="doc-upload"
+                          type="file"
+                          accept=".pdf,image/*"
+                          onChange={handleUploadDocument}
+                          className="hidden"
+                        />
+                      </>
+                    )}
+                  </div>
+
+                  {/* Document List */}
+                  {(!editingVehicle.documents || editingVehicle.documents.length === 0) ? (
+                    <p className="text-xs text-gray-450 italic text-center py-2">No documents attached to this vehicle yet.</p>
+                  ) : (
+                    <ul className="divide-y divide-gray-100 border border-gray-100 rounded-xl overflow-hidden bg-white shadow-xs">
+                      {editingVehicle.documents.map((doc, idx) => (
+                        <li key={idx} className="flex items-center justify-between p-3 hover:bg-gray-50/50 transition-colors">
+                          <div className="flex items-center gap-2.5 min-w-0 flex-1">
+                            <FileText className="h-4 w-4 text-amber-500 shrink-0" />
+                            <div className="min-w-0 flex-1">
+                              <p className="text-xs font-semibold text-gray-800 truncate" title={doc.name}>
+                                {doc.name}
+                              </p>
+                              <p className="text-[10px] text-gray-400 font-mono mt-0.5">
+                                {new Date(doc.uploadedAt).toLocaleDateString()}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-1.5 ml-2">
+                            <a
+                              href={doc.url}
+                              download={doc.name}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="h-7 w-7 rounded-lg border border-gray-200 bg-white flex items-center justify-center text-gray-500 hover:text-amber-600 hover:bg-amber-50/30 transition-colors cursor-pointer"
+                              title="Download / View"
+                            >
+                              <Download className="h-3.5 w-3.5" />
+                            </a>
+                            <button
+                              type="button"
+                              onClick={() => handleDeleteDocument(doc)}
+                              className="h-7 w-7 rounded-lg border border-gray-200 bg-white flex items-center justify-center text-red-500 hover:text-red-700 hover:bg-red-50 transition-colors cursor-pointer"
+                              title="Delete Document"
+                            >
+                              <Trash2 className="h-3.5 w-3.5" />
+                            </button>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              )}
             </form>
 
             {/* Footer Actions */}

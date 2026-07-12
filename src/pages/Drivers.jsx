@@ -16,7 +16,8 @@ import {
   Loader2, 
   AlertCircle, 
   Users, 
-  Award 
+  Award,
+  Mail
 } from 'lucide-react';
 
 // Default mock drivers if none exist in localStorage
@@ -297,6 +298,52 @@ export default function Drivers() {
     }
   };
 
+  // License Expiration Reminders (Hackathon UX/Log Fallback)
+  const [toastMessage, setToastMessage] = useState('');
+
+  const isLicenseExpiringSoonOrExpired = (expiryStr) => {
+    if (!expiryStr) return false;
+    const expiry = new Date(expiryStr);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const diffTime = expiry - today;
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays <= 30; // Expired or expiring within 30 days
+  };
+
+  const handleSendReminder = async (driver) => {
+    try {
+      const sentTime = new Date().toISOString();
+      if (isMock) {
+        // Mock Mode: Update localStorage
+        const storedDrivers = localStorage.getItem('mock_drivers');
+        if (storedDrivers) {
+          const list = JSON.parse(storedDrivers);
+          const updated = list.map((d) => {
+            if (d.id === driver.id) {
+              return { ...d, reminderSentAt: sentTime };
+            }
+            return d;
+          });
+          localStorage.setItem('mock_drivers', JSON.stringify(updated));
+          window.dispatchEvent(new Event('mock-drivers-updated'));
+        }
+      } else {
+        // Firebase Production Mode: Update Firestore document
+        const driverRef = doc(db, 'drivers', driver.id);
+        await updateDoc(driverRef, {
+          reminderSentAt: sentTime
+        });
+      }
+
+      setToastMessage(`Email notification reminder successfully dispatched to ${driver.name} at ${driver.contact || driver.email || 'operator contact'}`);
+      setTimeout(() => setToastMessage(''), 4000);
+    } catch (err) {
+      console.error('Error sending reminder:', err);
+      alert('Failed to send reminder. Please try again.');
+    }
+  };
+
   // 3. Magnetic Hover Effect Utility
   const handleMouseMove = (e) => {
     if (!btnRef.current) return;
@@ -421,6 +468,7 @@ export default function Drivers() {
                   <th scope="col" className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-500 font-mono text-center">Trip Compl.</th>
                   <th scope="col" className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-500 font-mono text-center">Safety Score</th>
                   <th scope="col" className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-500 font-mono">Status</th>
+                  <th scope="col" className="px-6 py-4 text-center text-xs font-bold uppercase tracking-wider text-gray-500 font-mono">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 text-sm font-sans">
@@ -482,6 +530,28 @@ export default function Drivers() {
                         }`}></span>
                         {d.status}
                       </span>
+                    </td>
+                    <td className="px-6 py-3.5 whitespace-nowrap text-center text-xs" onClick={(e) => e.stopPropagation()}>
+                      {isLicenseExpiringSoonOrExpired(d.licenseExpiry) ? (
+                        <div className="flex flex-col items-center gap-1">
+                          <button
+                            type="button"
+                            onClick={() => handleSendReminder(d)}
+                            className="inline-flex items-center gap-1.5 px-2.5 py-1.5 bg-amber-500 hover:bg-amber-600 text-gray-900 rounded-lg font-bold transition-all shadow-xs cursor-pointer select-none"
+                            title={`Send expiration email alert to ${d.name}`}
+                          >
+                            <Mail className="h-3.5 w-3.5" />
+                            <span>{d.reminderSentAt ? 'Resend Alert' : 'Send Alert'}</span>
+                          </button>
+                          {d.reminderSentAt && (
+                            <span className="text-[9px] text-emerald-600 font-bold font-mono tracking-wide">
+                              Sent: {new Date(d.reminderSentAt).toLocaleDateString(undefined, {month: '2-digit', day: '2-digit'})}
+                            </span>
+                          )}
+                        </div>
+                      ) : (
+                        <span className="text-gray-400 font-mono text-[10px] uppercase">Compliant</span>
+                      )}
                     </td>
                   </tr>
                 ))}
@@ -715,6 +785,17 @@ export default function Drivers() {
           animation: shake 0.2s ease-in-out;
         }
       `}</style>
+
+      {/* Toast Notification Pop-up */}
+      {toastMessage && (
+        <div className="fixed bottom-6 right-6 z-50 rounded-2xl border border-emerald-250 bg-emerald-50/95 px-4 py-3.5 shadow-xl flex items-center gap-2.5 max-w-sm animate-slide-in font-sans">
+          <Mail className="h-5 w-5 text-emerald-600 shrink-0" />
+          <div>
+            <p className="text-xs font-bold text-gray-900">Notification Broadcast</p>
+            <p className="text-[11px] text-emerald-700 mt-0.5 leading-normal">{toastMessage}</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
