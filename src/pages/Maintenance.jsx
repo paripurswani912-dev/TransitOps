@@ -92,24 +92,22 @@ export default function Maintenance() {
       loadMockData();
 
       // Custom window updates trigger
-      const handleStorageUpdate = (e) => {
-        if (
-          e.key === 'mock_maintenance' || 
-          e.key === 'mock_vehicles' || 
-          e.type === 'mock-update'
-        ) {
-          loadMockData();
-        }
+      const handleStorageUpdate = () => {
+        loadMockData();
       };
 
       window.addEventListener('storage', handleStorageUpdate);
-      window.addEventListener('mock-maintenance-updated', handleStorageUpdate);
       window.addEventListener('mock-vehicles-updated', handleStorageUpdate);
+      window.addEventListener('mock-drivers-updated', handleStorageUpdate);
+      window.addEventListener('mock-trips-updated', handleStorageUpdate);
+      window.addEventListener('mock-maintenance-updated', handleStorageUpdate);
 
       return () => {
         window.removeEventListener('storage', handleStorageUpdate);
-        window.removeEventListener('mock-maintenance-updated', handleStorageUpdate);
         window.removeEventListener('mock-vehicles-updated', handleStorageUpdate);
+        window.removeEventListener('mock-drivers-updated', handleStorageUpdate);
+        window.removeEventListener('mock-trips-updated', handleStorageUpdate);
+        window.removeEventListener('mock-maintenance-updated', handleStorageUpdate);
       };
     } else {
       // Real Firebase Firestore Mode
