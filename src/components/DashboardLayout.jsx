@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
@@ -14,7 +14,9 @@ import {
   LogOut,
   ShieldAlert,
   Sun,
-  Moon
+  Moon,
+  Lock,
+  ChevronLeft
 } from 'lucide-react';
 
 import { RBAC_MATRIX } from '../constants/rbac';
@@ -42,6 +44,17 @@ export const DashboardLayout = ({ children }) => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  // Load sidebar state from localStorage (default to false if not present)
+  const [isCollapsed, setIsCollapsed] = useState(() => {
+    const saved = localStorage.getItem('sidebar-collapsed');
+    return saved === 'true';
+  });
+
+  // Persist sidebar state when it changes
+  useEffect(() => {
+    localStorage.setItem('sidebar-collapsed', isCollapsed);
+  }, [isCollapsed]);
+
   const handleSignOut = async () => {
     try {
       await logOut();
@@ -63,9 +76,6 @@ export const DashboardLayout = ({ children }) => {
   ];
 
   // Check if current user role has access to current path
-  // Dashboard is accessible to Dispatcher, but we can allow it as a fallback landing page for all,
-  // or restrict it. Let's allow '/dashboard' as a common home page but display different widgets,
-  // and check strict access for other pages.
   const hasAccess = (path) => {
     if (path === '/dashboard' || path === '/settings') return true;
     const permissions = RBAC_MATRIX[role] || {};
@@ -74,31 +84,69 @@ export const DashboardLayout = ({ children }) => {
 
   const isCurrentPathAllowed = hasAccess(location.pathname);
 
+  // Get correct tooltip text for links
+  const getTooltipTitle = (item, allowed) => {
+    if (isCollapsed) {
+      return allowed ? item.name : `${item.name} (Locked)`;
+    }
+    return !allowed ? `Restricted to ${ROLE_NAMES[role] || role}` : '';
+  };
+
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-[#F3F4F6] dark:bg-slate-950">
       {/* Sidebar */}
-      <aside className="flex w-64 flex-col border-r border-gray-200 dark:border-slate-800 bg-[#1F2937] text-white">
+      <aside className={`relative flex flex-col border-r border-gray-200 dark:border-slate-800 bg-[#1F2937] text-white transition-all duration-300 shrink-0 ${
+        isCollapsed ? 'w-[72px]' : 'w-[280px]'
+      }`}>
+        {/* Toggle Button */}
+        <button
+          onClick={() => setIsCollapsed(!isCollapsed)}
+          className="absolute right-[-12px] top-6 flex h-6 w-6 items-center justify-center rounded-full border border-gray-700 bg-gray-800 text-gray-300 hover:text-white hover:bg-gray-700 shadow-md cursor-pointer transition-all duration-150 active:scale-90 z-20"
+          title={isCollapsed ? 'Expand Sidebar' : 'Collapse Sidebar'}
+        >
+          <ChevronLeft className={`h-4 w-4 transition-transform duration-300 ${isCollapsed ? 'rotate-180' : ''}`} />
+        </button>
+
         {/* Brand */}
-        <div className="flex h-16 items-center px-6 border-b border-gray-800">
-          <span className="text-xl font-bold tracking-tight text-white flex items-center gap-2">
-            <span className="h-2 w-2 rounded-full bg-amber-500"></span>
-            TransitOps
-          </span>
-          <span className="ml-2 rounded bg-amber-500/10 px-2 py-0.5 text-[10px] font-medium text-amber-500 font-mono">
-            v1.0
-          </span>
+        <div className={`flex h-16 items-center border-b border-gray-800 overflow-hidden ${
+          isCollapsed ? 'justify-center px-4' : 'px-6 justify-between'
+        }`}>
+          <div className="flex items-center gap-2 overflow-hidden whitespace-nowrap">
+            <span className="h-2.5 w-2.5 rounded-full bg-amber-500 shrink-0"></span>
+            {!isCollapsed && (
+              <span className="text-xl font-bold tracking-tight text-white transition-opacity duration-300">
+                TransitOps
+              </span>
+            )}
+          </div>
+          {!isCollapsed && (
+            <span className="rounded bg-amber-500/10 px-2 py-0.5 text-[10px] font-medium text-amber-500 font-mono shrink-0 transition-opacity duration-300">
+              v1.0
+            </span>
+          )}
         </div>
 
         {/* User Info & Role Badge */}
-        <div className="p-4 border-b border-gray-800 bg-gray-900/50">
-          <div className="text-sm font-medium truncate text-gray-200">{user?.name || user?.email}</div>
-          <div className="text-[11px] font-semibold text-amber-400 font-mono uppercase mt-1 tracking-wider">
-            {ROLE_NAMES[role] || role}
+        {isCollapsed ? (
+          <div className="p-4 border-b border-gray-800 flex justify-center bg-gray-900/30">
+            <div
+              className="h-9 w-9 rounded-full bg-amber-500 text-gray-950 flex items-center justify-center font-bold text-sm tracking-tighter cursor-help"
+              title={`${user?.name || 'User'} (${ROLE_NAMES[role] || role})`}
+            >
+              {getInitials(user?.name || user?.email || 'Raven K.')}
+            </div>
           </div>
-          {user?.email && (
-            <div className="text-[10px] text-gray-400 truncate mt-0.5">{user.email}</div>
-          )}
-        </div>
+        ) : (
+          <div className="p-4 border-b border-gray-800 bg-gray-900/50">
+            <div className="text-sm font-medium truncate text-gray-200">{user?.name || user?.email}</div>
+            <div className="text-[11px] font-semibold text-amber-400 font-mono uppercase mt-1 tracking-wider">
+              {ROLE_NAMES[role] || role}
+            </div>
+            {user?.email && (
+              <div className="text-[10px] text-gray-400 truncate mt-0.5">{user.email}</div>
+            )}
+          </div>
+        )}
 
         {/* Navigation */}
         <nav className="flex-1 space-y-1 px-3 py-4 overflow-y-auto">
@@ -116,21 +164,37 @@ export const DashboardLayout = ({ children }) => {
                     e.preventDefault();
                   }
                 }}
-                className={`group flex items-center px-3 py-2 text-sm font-medium rounded-xl transition-all duration-150 ${active
+                className={`group flex items-center text-sm font-medium rounded-xl transition-all duration-150 ${
+                  isCollapsed ? 'justify-center py-2.5 px-0' : 'px-3 py-2'
+                } ${active
                     ? 'bg-amber-500 text-gray-900'
                     : allowed
                       ? 'text-gray-300 hover:bg-gray-800 hover:text-white'
                       : 'text-gray-600 cursor-not-allowed opacity-40'
                   }`}
-                title={!allowed ? `Restricted to ${ROLE_NAMES[role]}` : ''}
+                title={getTooltipTitle(item, allowed)}
               >
-                <Icon className={`mr-3 h-5 w-5 shrink-0 ${active ? 'text-gray-900' : allowed ? 'text-gray-400 group-hover:text-white' : 'text-gray-700'
-                  }`} />
-                <span className="flex-1">{item.name}</span>
-                {!allowed && (
-                  <span className="text-[9px] font-mono bg-gray-800 text-gray-400 px-1.5 py-0.5 rounded">
-                    Lock
-                  </span>
+                <div className="relative flex items-center justify-center shrink-0">
+                  <Icon className={`h-5 w-5 shrink-0 ${
+                    isCollapsed ? '' : 'mr-3'
+                  } ${active ? 'text-gray-900' : allowed ? 'text-gray-400 group-hover:text-white' : 'text-gray-700'
+                    }`} />
+                  {isCollapsed && !allowed && (
+                    <span className="absolute -top-1.5 -right-1.5 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-rose-600 text-white border border-[#1F2937] text-[8px] font-bold shadow-sm z-10">
+                      <Lock className="h-2 w-2 stroke-[2.5]" />
+                    </span>
+                  )}
+                </div>
+                
+                {!isCollapsed && (
+                  <>
+                    <span className="flex-1 truncate">{item.name}</span>
+                    {!allowed && (
+                      <span className="text-[9px] font-mono bg-gray-800 text-gray-400 px-1.5 py-0.5 rounded ml-2 shrink-0">
+                        Lock
+                      </span>
+                    )}
+                  </>
                 )}
               </Link>
             );
@@ -142,10 +206,13 @@ export const DashboardLayout = ({ children }) => {
           <button
             id="btn-sidebar-signout"
             onClick={handleSignOut}
-            className="flex w-full items-center px-3 py-2 text-sm font-medium text-red-400 hover:bg-red-500/10 rounded-xl transition-colors duration-150"
+            className={`flex items-center text-sm font-medium text-red-400 hover:bg-red-500/10 rounded-xl transition-colors duration-150 ${
+              isCollapsed ? 'w-full justify-center py-2.5 px-0' : 'w-full px-3 py-2'
+            }`}
+            title={isCollapsed ? 'Sign Out' : ''}
           >
-            <LogOut className="mr-3 h-5 w-5 text-red-400" />
-            Sign Out
+            <LogOut className={`h-5 w-5 text-red-400 shrink-0 ${isCollapsed ? '' : 'mr-3'}`} />
+            {!isCollapsed && <span>Sign Out</span>}
           </button>
         </div>
       </aside>
