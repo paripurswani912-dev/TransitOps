@@ -310,7 +310,7 @@ export default function Maintenance() {
 
       {/* Database Error Alert */}
       {error && (
-        <div className="rounded-2xl border border-red-200 dark:border-red-900/30 bg-red-50/50 dark:bg-red-950/20 p-4 text-sm text-red-800 dark:text-red-400 flex items-start gap-3">
+        <div className="rounded-xl border border-red-200 dark:border-red-900/30 bg-red-50/50 dark:bg-red-950/20 p-3 text-sm text-red-800 dark:text-red-400 flex items-start gap-3">
           <AlertCircle className="h-5 w-5 text-red-600 shrink-0 mt-0.5" />
           <div>
             <p className="font-bold">System Connection Issue</p>
@@ -320,7 +320,7 @@ export default function Maintenance() {
       )}
 
       {loading ? (
-        <div className="flex flex-col items-center justify-center py-20 bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-sm">
+        <div className="flex flex-col items-center justify-center py-12 bg-white dark:bg-slate-900 rounded-xl border border-gray-200 dark:border-slate-800 shadow-sm">
           <Loader2 className="h-10 w-10 animate-spin text-amber-500 mb-3" />
           <p className="text-sm font-semibold tracking-wider text-gray-400 dark:text-slate-500 font-mono uppercase">Syncing Maintenance Hub...</p>
         </div>
@@ -328,7 +328,7 @@ export default function Maintenance() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           
           {/* LEFT COLUMN - Form */}
-          <section className="lg:col-span-5 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm space-y-6">
+          <section className="lg:col-span-5 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-xl p-5 shadow-sm space-y-4">
             <div className="border-b border-gray-100 dark:border-slate-800 pb-4">
               <h3 className="text-lg font-bold text-gray-900 dark:text-slate-100 font-sans">Log Service Record</h3>
               <p className="text-xs text-gray-400 dark:text-slate-550 mt-1 font-mono">Stage: Shop Intake Portal</p>
@@ -500,7 +500,7 @@ export default function Maintenance() {
           <section className="lg:col-span-7 space-y-4">
             
             {/* Header & Search */}
-            <div className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm space-y-3.5">
+            <div className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 p-3 rounded-xl shadow-sm space-y-3">
               <div className="flex items-center justify-between">
                 <h3 className="text-lg font-bold text-gray-900 dark:text-slate-100 font-sans">Service History</h3>
                 <span className="text-[10px] font-mono bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-850/30 text-amber-800 dark:text-amber-400 px-2 py-0.5 rounded-md uppercase font-bold">
@@ -525,12 +525,12 @@ export default function Maintenance() {
 
             {/* Service Log Table */}
             {filteredLogs.length === 0 ? (
-              <div className="flex flex-col items-center justify-center py-20 bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-sm text-center">
+              <div className="flex flex-col items-center justify-center py-12 bg-white dark:bg-slate-900 rounded-xl border border-gray-200 dark:border-slate-800 shadow-sm text-center">
                 <Info className="h-8 w-8 text-gray-300 dark:text-slate-550 mb-2 animate-bounce" />
                 <p className="text-sm font-semibold text-gray-400 dark:text-slate-500 font-mono uppercase">No maintenance logs found</p>
               </div>
             ) : (
-              <div className="overflow-hidden border border-gray-200 dark:border-slate-800 rounded-2xl bg-white dark:bg-slate-900 shadow-sm">
+              <div className="overflow-hidden border border-gray-200 dark:border-slate-800 rounded-xl bg-white dark:bg-slate-900 shadow-sm">
                 <div className="overflow-x-auto">
                   <table className="min-w-full divide-y divide-gray-200 dark:divide-slate-800">
                     <thead className="bg-gray-50 dark:bg-slate-800/40">
@@ -574,11 +574,11 @@ export default function Maintenance() {
                             <td className="px-6 py-4 whitespace-nowrap">
                               <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold ${
                                 log.status === 'In Progress' ? 'bg-amber-50 text-amber-800 border border-amber-200' :
-                                'bg-emerald-50 text-emerald-800 border border-emerald-200'
+                                'bg-green-50 text-green-800 border border-green-200'
                               }`}>
                                 <span className={`h-1.5 w-1.5 rounded-full ${
                                   log.status === 'In Progress' ? 'bg-amber-500 animate-pulse' :
-                                  'bg-emerald-500'
+                                  'bg-green-500'
                                 }`}></span>
                                 {log.status === 'In Progress' ? 'In Shop' : 'Completed'}
                               </span>
@@ -590,7 +590,7 @@ export default function Maintenance() {
                                 <button
                                   onClick={() => handleMarkComplete(log)}
                                   disabled={updatingLogId === log.id}
-                                  className="inline-flex items-center gap-1 px-3 py-1.5 bg-emerald-500 text-white rounded-lg font-bold hover:bg-emerald-600 transition-colors shadow-xs cursor-pointer disabled:bg-gray-150 dark:disabled:bg-slate-800 disabled:text-gray-400 dark:disabled:text-slate-500 disabled:cursor-not-allowed"
+                                  className="inline-flex items-center gap-1 px-3 py-1.5 bg-green-500 text-white rounded-lg font-bold hover:bg-green-600 transition-colors shadow-sm cursor-pointer disabled:bg-gray-150 dark:disabled:bg-slate-800 disabled:text-gray-400 dark:disabled:text-slate-500 disabled:cursor-not-allowed"
                                 >
                                   {updatingLogId === log.id ? (
                                     <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -602,7 +602,7 @@ export default function Maintenance() {
                               ) : log.status === 'In Progress' ? (
                                 <span className="text-gray-400 dark:text-slate-550 font-medium italic text-[11px]">In Progress</span>
                               ) : (
-                                <span className="text-emerald-600 dark:text-emerald-400 font-semibold text-[11px]">Service Completed</span>
+                                <span className="text-green-600 dark:text-green-400 font-semibold text-[11px]">Service Completed</span>
                               )}
                             </td>
 

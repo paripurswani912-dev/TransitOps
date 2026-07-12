@@ -101,7 +101,7 @@ export const DashboardLayout = ({ children }) => {
         {/* Toggle Button */}
         <button
           onClick={() => setIsCollapsed(!isCollapsed)}
-          className="absolute right-[-12px] top-6 flex h-6 w-6 items-center justify-center rounded-full border border-gray-700 bg-gray-800 text-gray-300 hover:text-white hover:bg-gray-700 shadow-md cursor-pointer transition-all duration-150 active:scale-90 z-20"
+          className="absolute right-[-12px] top-6 flex h-6 w-6 items-center justify-center rounded-full border border-gray-700 bg-gray-800 text-gray-300 hover:text-white hover:bg-gray-700 shadow-sm cursor-pointer transition-all duration-150 active:scale-90 z-20"
           title={isCollapsed ? 'Expand Sidebar' : 'Collapse Sidebar'}
         >
           <ChevronLeft className={`h-4 w-4 transition-transform duration-300 ${isCollapsed ? 'rotate-180' : ''}`} />
@@ -180,7 +180,7 @@ export const DashboardLayout = ({ children }) => {
                   } ${active ? 'text-gray-900' : allowed ? 'text-gray-400 group-hover:text-white' : 'text-gray-700'
                     }`} />
                   {isCollapsed && !allowed && (
-                    <span className="absolute -top-1.5 -right-1.5 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-rose-600 text-white border border-[#1F2937] text-[8px] font-bold shadow-sm z-10">
+                    <span className="absolute -top-1.5 -right-1.5 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-red-600 text-white border border-[#1F2937] text-[8px] font-bold shadow-sm z-10">
                       <Lock className="h-2 w-2 stroke-[2.5]" />
                     </span>
                   )}
@@ -254,13 +254,13 @@ export const DashboardLayout = ({ children }) => {
         </header>
 
         {/* Page Content */}
-        <main className="flex-1 overflow-y-auto p-8">
+        <main className="flex-1 overflow-y-auto p-6">
           {isCurrentPathAllowed ? (
-            <div className="h-full bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-sm p-6 overflow-y-auto">
+            <div className="h-full bg-white dark:bg-slate-900 rounded-xl border border-gray-200 dark:border-slate-800 shadow-sm p-5 overflow-y-auto">
               {children}
             </div>
           ) : (
-            <div className="flex h-full flex-col items-center justify-center bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-sm p-8 text-center">
+            <div className="flex h-full flex-col items-center justify-center bg-white dark:bg-slate-900 rounded-xl border border-gray-200 dark:border-slate-800 shadow-sm p-6 text-center">
               <div className="rounded-full bg-red-50 dark:bg-red-950/20 p-4 text-red-600 dark:text-red-400 mb-4">
                 <ShieldAlert className="h-12 w-12" />
               </div>

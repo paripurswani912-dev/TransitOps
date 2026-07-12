@@ -181,7 +181,7 @@ export default function Settings() {
 
       {/* Database Error Alert */}
       {error && (
-        <div className="rounded-2xl border border-red-200 bg-red-50/50 p-4 text-sm text-red-800 flex items-start gap-3">
+        <div className="rounded-xl border border-red-200 bg-red-50/50 p-3 text-sm text-red-800 flex items-start gap-3">
           <AlertCircle className="h-5 w-5 text-red-600 shrink-0 mt-0.5" />
           <div>
             <p className="font-bold">System Connection Issue</p>
@@ -191,7 +191,7 @@ export default function Settings() {
       )}
 
       {loading ? (
-        <div className="flex flex-col items-center justify-center py-20 bg-white rounded-2xl border border-gray-200 shadow-sm">
+        <div className="flex flex-col items-center justify-center py-12 bg-white rounded-xl border border-gray-200 shadow-sm">
           <Loader2 className="h-10 w-10 animate-spin text-amber-500 mb-3" />
           <p className="text-sm font-semibold tracking-wider text-gray-400 font-mono uppercase">Syncing Configuration Hub...</p>
         </div>
@@ -199,15 +199,15 @@ export default function Settings() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           
           {/* LEFT COLUMN - General Settings Form */}
-          <section className="lg:col-span-5 bg-white border border-gray-200 rounded-2xl p-6 shadow-sm space-y-6">
-            <div className="border-b border-gray-100 pb-4">
+          <section className="lg:col-span-5 bg-white border border-gray-200 rounded-xl p-5 shadow-sm space-y-4">
+            <div className="border-b border-gray-100 pb-3">
               <h3 className="text-lg font-bold text-gray-900 font-sans">General Configurations</h3>
               <p className="text-xs text-gray-400 mt-1 font-mono">Workspace: Depot Operational Defaults</p>
             </div>
 
             {successMessage && (
-              <div className="rounded-xl border border-emerald-250 bg-emerald-50/50 p-3 text-xs text-emerald-800 flex items-start gap-2 animate-slide-in">
-                <CheckCircle className="h-4.5 w-4.5 text-emerald-600 shrink-0" />
+              <div className="rounded-xl border border-green-250 bg-green-50/50 p-3 text-xs text-green-800 flex items-start gap-2 animate-slide-in">
+                <CheckCircle className="h-4.5 w-4.5 text-green-600 shrink-0" />
                 <p className="font-bold">{successMessage}</p>
               </div>
             )}
@@ -298,7 +298,7 @@ export default function Settings() {
           </section>
 
           {/* RIGHT COLUMN - RBAC Matrix Table */}
-          <section className="lg:col-span-7 bg-white border border-gray-200 rounded-2xl p-6 shadow-sm space-y-4">
+          <section className="lg:col-span-7 bg-white border border-gray-200 rounded-xl p-5 shadow-sm space-y-4">
             
             <div className="border-b border-gray-100 pb-3 flex justify-between items-center">
               <div>
@@ -341,8 +341,8 @@ export default function Settings() {
                           let icon = <Minus className="h-3 w-3" />;
                           
                           if (level === '✓') {
-                            badgeStyles = 'text-emerald-700 bg-emerald-50 border border-emerald-100 font-bold';
-                            icon = <CheckCircle className="h-3.5 w-3.5 text-emerald-600" />;
+                            badgeStyles = 'text-green-700 bg-green-50 border border-green-100 font-bold';
+                            icon = <CheckCircle className="h-3.5 w-3.5 text-green-600" />;
                           } else if (level === 'view') {
                             badgeStyles = 'text-amber-700 bg-amber-50 border border-amber-100 font-medium';
                             icon = <Eye className="h-3.5 w-3.5 text-amber-600" />;
@@ -375,7 +375,7 @@ export default function Settings() {
                 <p className="font-bold">Matrix Key Details:</p>
                 <ul className="list-disc pl-4 mt-1.5 space-y-1.5 text-amber-800">
                   <li>
-                    <strong className="font-mono text-emerald-700 font-bold">✓ (Full Access)</strong>: Full operational authorization. Users can view registers, submit forms, log services, complete trips, and delete logs.
+                    <strong className="font-mono text-green-700 font-bold">✓ (Full Access)</strong>: Full operational authorization. Users can view registers, submit forms, log services, complete trips, and delete logs.
                   </li>
                   <li>
                     <strong className="font-mono text-amber-700 font-bold">view (View Only)</strong>: Read-only reference panel access. Users can navigate to the page and search the data, but save buttons and trigger actions are fully disabled.

@@ -382,7 +382,7 @@ export default function Drivers() {
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
             onClick={handleOpenAddDrawer}
-            className="inline-flex items-center justify-center gap-2 rounded-2xl bg-amber-500 px-5 py-3 text-sm font-bold text-gray-900 shadow-md hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 transition-all duration-300 ease-out cursor-pointer select-none shrink-0"
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-amber-500 px-4 py-2.5 text-sm font-bold text-gray-900 shadow-sm hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 transition-all duration-300 ease-out cursor-pointer select-none shrink-0"
           >
             <Plus className="h-4.5 w-4.5 stroke-[2.5]" />
             <span>Add Driver</span>
@@ -392,7 +392,7 @@ export default function Drivers() {
 
       {/* Database Error Alert */}
       {error && (
-        <div className="rounded-2xl border border-red-200 dark:border-red-900/30 bg-red-50/50 dark:bg-red-950/20 text-sm text-red-800 dark:text-red-400 flex items-start gap-3">
+        <div className="rounded-xl border border-red-200 dark:border-red-900/30 bg-red-50/50 dark:bg-red-950/20 text-sm text-red-800 dark:text-red-400 flex items-start gap-3 p-3">
           <AlertCircle className="h-5 w-5 text-red-600 shrink-0 mt-0.5" />
           <div>
             <p className="font-bold">System Connection Issue</p>
@@ -402,7 +402,7 @@ export default function Drivers() {
       )}
 
       {/* Filter Row */}
-      <div className="bg-gray-50/60 dark:bg-slate-800/40 p-4 rounded-2xl border border-gray-150 dark:border-slate-800">
+      <div className="bg-gray-50/60 dark:bg-slate-800/40 p-3 rounded-xl border border-gray-150 dark:border-slate-800">
         {/* Search input */}
         <div className="relative max-w-md">
           <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
@@ -420,13 +420,13 @@ export default function Drivers() {
 
       {/* Main Content Area */}
       {loading ? (
-        <div className="flex flex-col items-center justify-center py-20 bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-sm">
+        <div className="flex flex-col items-center justify-center py-12 bg-white dark:bg-slate-900 rounded-xl border border-gray-200 dark:border-slate-800 shadow-sm">
           <Loader2 className="h-10 w-10 animate-spin text-amber-500 mb-3" />
           <p className="text-sm font-semibold tracking-wider text-gray-400 dark:text-slate-500 font-mono uppercase">Querying Driver Registries...</p>
         </div>
       ) : filteredDrivers.length === 0 ? (
         /* Empty State */
-        <div className="flex flex-col items-center justify-center py-16 bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-sm text-center px-4">
+        <div className="flex flex-col items-center justify-center py-12 bg-white dark:bg-slate-900 rounded-xl border border-gray-200 dark:border-slate-800 shadow-sm text-center px-4">
           <div className="h-14 w-14 rounded-full bg-amber-50 dark:bg-amber-500/10 flex items-center justify-center text-amber-500 mb-4 animate-pulse">
             <Users className="h-7 w-7" />
           </div>
@@ -455,7 +455,7 @@ export default function Drivers() {
         </div>
       ) : (
         /* Data Table */
-        <div className="overflow-hidden border border-gray-200 dark:border-slate-800 rounded-2xl bg-white dark:bg-slate-900 shadow-sm transition-all duration-300">
+        <div className="overflow-hidden border border-gray-200 dark:border-slate-800 rounded-xl bg-white dark:bg-slate-900 shadow-sm transition-all duration-300">
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200 dark:divide-slate-800">
               <thead className="bg-gray-50 dark:bg-slate-800/40">
@@ -500,13 +500,13 @@ export default function Drivers() {
 
                     {/* Safety score with colored pill */}
                     <td className="px-6 py-4 whitespace-nowrap text-center">
-                      <span className={`inline-flex items-center gap-1 font-mono font-bold rounded-lg px-2.5 py-1 text-xs ${d.safetyScore >= 95 ? 'bg-emerald-50 dark:bg-emerald-950/20 text-emerald-800 dark:text-emerald-400 border border-emerald-150 dark:border-emerald-850/30' :
+                      <span className={`inline-flex items-center gap-1 font-mono font-bold rounded-lg px-2.5 py-1 text-xs ${d.safetyScore >= 95 ? 'bg-green-50 dark:bg-green-950/20 text-green-800 dark:text-green-400 border border-green-150 dark:border-green-850/30' :
                           d.safetyScore >= 90 ? 'bg-amber-50 dark:bg-amber-950/20 text-amber-800 dark:text-amber-400 border border-amber-150 dark:border-amber-850/30' :
-                            'bg-rose-50 dark:bg-rose-950/20 text-rose-800 dark:text-rose-400 border border-rose-150 dark:border-rose-850/30'
+                            'bg-red-50 dark:bg-red-950/20 text-red-800 dark:text-red-400 border border-red-150 dark:border-red-850/30'
                         }`}>
-                        <Award className={`h-3.5 w-3.5 ${d.safetyScore >= 95 ? 'text-emerald-500' :
+                        <Award className={`h-3.5 w-3.5 ${d.safetyScore >= 95 ? 'text-green-500' :
                             d.safetyScore >= 90 ? 'text-amber-500' :
-                              'text-rose-500'
+                              'text-red-500'
                           }`} />
                         <span>{d.safetyScore} / 100</span>
                       </span>
@@ -514,15 +514,15 @@ export default function Drivers() {
 
                     {/* Status Pill Badge */}
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold ${d.status === 'Available' ? 'bg-emerald-50 dark:bg-emerald-950/20 text-emerald-800 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-850/30' :
+                      <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold ${d.status === 'Available' ? 'bg-green-50 dark:bg-green-950/20 text-green-800 dark:text-green-400 border border-green-200 dark:border-green-850/30' :
                           d.status === 'On Trip' ? 'bg-blue-50 dark:bg-blue-950/20 text-blue-800 dark:text-blue-400 border border-blue-200 dark:border-blue-850/30' :
-                            d.status === 'Off Duty' ? 'bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-slate-300 border border-gray-250 dark:border-slate-750' :
-                              'bg-rose-50 dark:bg-rose-950/20 text-rose-800 dark:text-rose-400 border border-rose-200 dark:border-rose-850/30'
+                            d.status === 'Off Duty' ? 'bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-slate-350 border border-gray-200 dark:border-slate-700' :
+                              'bg-red-50 dark:bg-red-950/20 text-red-800 dark:text-red-400 border border-red-200 dark:border-red-850/30'
                         }`}>
-                        <span className={`h-1.5 w-1.5 rounded-full ${d.status === 'Available' ? 'bg-emerald-500' :
+                        <span className={`h-1.5 w-1.5 rounded-full ${d.status === 'Available' ? 'bg-green-500' :
                             d.status === 'On Trip' ? 'bg-blue-500' :
                               d.status === 'Off Duty' ? 'bg-gray-400' :
-                                'bg-rose-500'
+                                'bg-red-500'
                           }`}></span>
                         {d.status}
                       </span>
@@ -558,11 +558,11 @@ export default function Drivers() {
       )}
 
       {/* Legend Row of 4 status pills */}
-      <div className="flex items-center space-x-4 bg-gray-50/50 dark:bg-slate-800/40 border border-gray-200 dark:border-slate-800 rounded-xl p-3.5">
+      <div className="flex items-center space-x-4 bg-gray-50/50 dark:bg-slate-800/40 border border-gray-200 dark:border-slate-800 rounded-xl p-3">
         <span className="text-xs font-semibold text-gray-500 dark:text-slate-400 font-mono uppercase tracking-wider">Status Key:</span>
         <div className="flex flex-wrap items-center gap-3">
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 dark:bg-emerald-950/20 text-emerald-800 dark:text-emerald-400 border border-emerald-250 dark:border-emerald-800/30">
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>Available
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-green-50 dark:bg-green-950/20 text-green-800 dark:text-green-400 border border-green-250 dark:border-green-800/30">
+            <span className="h-1.5 w-1.5 rounded-full bg-green-500"></span>Available
           </span>
           <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-50 dark:bg-blue-950/20 text-blue-800 dark:text-blue-400 border border-blue-250 dark:border-blue-800/30">
             <span className="h-1.5 w-1.5 rounded-full bg-blue-500"></span>On Trip
@@ -570,8 +570,8 @@ export default function Drivers() {
           <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-gray-50 dark:bg-slate-800 text-gray-600 dark:text-slate-350 border border-gray-200 dark:border-slate-700">
             <span className="h-1.5 w-1.5 rounded-full bg-gray-400"></span>Off Duty
           </span>
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-rose-50 dark:bg-rose-950/20 text-rose-800 dark:text-rose-400 border border-rose-250 dark:border-rose-800/30">
-            <span className="h-1.5 w-1.5 rounded-full bg-rose-500"></span>Suspended
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-red-50 dark:bg-red-950/20 text-red-800 dark:text-red-400 border border-red-250 dark:border-red-800/30">
+            <span className="h-1.5 w-1.5 rounded-full bg-red-500"></span>Suspended
           </span>
         </div>
       </div>
@@ -594,7 +594,7 @@ export default function Drivers() {
           ></div>
 
           {/* Drawer container */}
-          <div className="relative w-full max-w-md bg-white dark:bg-slate-900 shadow-2xl flex flex-col h-full z-10 animate-slide-in">
+          <div className="relative w-full max-w-md bg-white dark:bg-slate-900 shadow-sm flex flex-col h-full z-10 animate-slide-in">
             {/* Header */}
             <div className="flex items-center justify-between px-6 py-5 border-b border-gray-150 dark:border-slate-800">
               <div>
@@ -784,11 +784,11 @@ export default function Drivers() {
 
       {/* Toast Notification Pop-up */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 rounded-2xl border border-emerald-250 bg-emerald-50/95 px-4 py-3.5 shadow-xl flex items-center gap-2.5 max-w-sm animate-slide-in font-sans">
-          <Mail className="h-5 w-5 text-emerald-600 shrink-0" />
+        <div className="fixed bottom-6 right-6 z-50 rounded-xl border border-green-250 bg-green-50/95 px-4 py-3 shadow-sm flex items-center gap-2.5 max-w-sm animate-slide-in font-sans">
+          <Mail className="h-5 w-5 text-green-600 shrink-0" />
           <div>
             <p className="text-xs font-bold text-gray-900">Notification Broadcast</p>
-            <p className="text-[11px] text-emerald-700 mt-0.5 leading-normal">{toastMessage}</p>
+            <p className="text-[11px] text-green-700 mt-0.5 leading-normal">{toastMessage}</p>
           </div>
         </div>
       )}

@@ -344,7 +344,7 @@ export default function FuelExpenses() {
     const normalized = (status || 'Available').toLowerCase();
     if (normalized === 'available') {
       return (
-        <span className="px-2.5 py-1 text-xs font-bold font-mono rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200">
+        <span className="px-2.5 py-1 text-xs font-bold font-mono rounded-lg bg-green-50 text-green-700 border border-green-200">
           Available
         </span>
       );
@@ -395,7 +395,7 @@ export default function FuelExpenses() {
 
       {/* Database Error Alert */}
       {error && (
-        <div className="rounded-2xl border border-red-200 dark:border-red-900/30 bg-red-50/50 dark:bg-red-950/20 p-4 text-sm text-red-800 dark:text-red-400 flex items-start gap-3">
+        <div className="rounded-xl border border-red-200 dark:border-red-900/30 bg-red-50/50 dark:bg-red-955/20 text-sm text-red-800 dark:text-red-400 flex items-start gap-3">
           <AlertCircle className="h-5 w-5 text-red-600 shrink-0 mt-0.5" />
           <div>
             <p className="font-bold">System Connection Issue</p>
@@ -405,7 +405,7 @@ export default function FuelExpenses() {
       )}
 
       {loading ? (
-        <div className="flex flex-col items-center justify-center py-20 bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-sm">
+        <div className="flex flex-col items-center justify-center py-12 bg-white dark:bg-slate-900 rounded-xl border border-gray-200 dark:border-slate-800 shadow-sm">
           <Loader2 className="h-10 w-10 animate-spin text-amber-500 mb-3" />
           <p className="text-sm font-semibold tracking-wider text-gray-400 dark:text-slate-550 font-mono uppercase">Syncing financial reports...</p>
         </div>
@@ -413,7 +413,7 @@ export default function FuelExpenses() {
         <div className="space-y-8">
           
           {/* SECTION 1 - Fuel Logs */}
-          <section className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-850 rounded-2xl shadow-sm overflow-hidden">
+          <section className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-850 rounded-xl shadow-sm overflow-hidden">
             <div className="p-6 border-b border-gray-100 dark:border-slate-850 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
                 <h3 className="text-lg font-bold text-gray-900 dark:text-slate-100 flex items-center gap-2">
@@ -471,7 +471,7 @@ export default function FuelExpenses() {
           </section>
 
           {/* SECTION 2 - Other Expenses */}
-          <section className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-850 rounded-2xl shadow-sm overflow-hidden">
+          <section className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-850 rounded-xl shadow-sm overflow-hidden">
             <div className="p-6 border-b border-gray-100 dark:border-slate-850 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
                 <h3 className="text-lg font-bold text-gray-900 dark:text-slate-100 flex items-center gap-2">
@@ -548,7 +548,7 @@ export default function FuelExpenses() {
           </section>
 
           {/* BOTTOM SUMMARY BAR */}
-          <div className="bg-slate-900 border border-slate-800 text-white p-6 rounded-2xl shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="bg-slate-900 border border-slate-800 text-white p-4 rounded-xl shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div className="flex items-start gap-2.5">
               <TrendingUp className="h-5 w-5 text-amber-500 shrink-0 mt-0.5" />
               <div>
@@ -560,7 +560,7 @@ export default function FuelExpenses() {
             </div>
             <div className="text-right">
               <span className="text-xs text-amber-500 font-mono block mb-1">FUEL + MAINTENANCE</span>
-              <span className="text-2xl md:text-3xl font-bold font-mono tracking-tight text-amber-500">
+              <span className="text-3xl font-bold font-mono tracking-tight text-amber-500">
                 ${grandOperationalTotal.toLocaleString(undefined, { minimumFractionDigits: 2 })}
               </span>
             </div>
@@ -576,7 +576,7 @@ export default function FuelExpenses() {
             className="fixed inset-0 bg-black/40 backdrop-blur-xs transition-opacity"
             onClick={() => setIsFuelModalOpen(false)}
           />
-          <div className="relative bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-2xl w-full max-w-md overflow-hidden animate-in fade-in zoom-in-95 duration-200 z-10">
+          <div className="relative bg-white dark:bg-slate-900 rounded-xl border border-gray-200 dark:border-slate-800 shadow-sm w-full max-w-md overflow-hidden animate-in fade-in zoom-in-95 duration-200 z-10">
             <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 dark:border-slate-850 bg-gray-50/50 dark:bg-slate-850/20">
               <h3 className="text-lg font-bold text-gray-900 dark:text-slate-100 flex items-center gap-2">
                 <Fuel className="h-5 w-5 text-amber-500" />
@@ -704,7 +704,7 @@ export default function FuelExpenses() {
             className="fixed inset-0 bg-black/40 backdrop-blur-xs transition-opacity"
             onClick={() => setIsExpenseModalOpen(false)}
           />
-          <div className="relative bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-2xl w-full max-w-md overflow-hidden animate-in fade-in zoom-in-95 duration-200 z-10">
+          <div className="relative bg-white dark:bg-slate-900 rounded-xl border border-gray-200 dark:border-slate-800 shadow-sm w-full max-w-md overflow-hidden animate-in fade-in zoom-in-95 duration-200 z-10">
             <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 dark:border-slate-850 bg-gray-50/50 dark:bg-slate-850/20">
               <h3 className="text-lg font-bold text-gray-900 dark:text-slate-100 flex items-center gap-2">
                 <Coins className="h-5 w-5 text-amber-500" />

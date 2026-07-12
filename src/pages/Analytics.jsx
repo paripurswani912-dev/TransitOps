@@ -418,7 +418,7 @@ export default function Analytics() {
     <div className="space-y-6">
       
       {/* Title & Action Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white dark:bg-slate-900 border border-gray-250 dark:border-slate-800 p-5 rounded-2xl shadow-sm">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white dark:bg-slate-900 border border-gray-255 dark:border-slate-800 p-4 rounded-xl shadow-sm">
         <div>
           <h2 className="text-2xl font-bold text-gray-900 dark:text-slate-100 tracking-tight font-sans">Reports & Analytics</h2>
           <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">Review operational performance charts and ROI diagnostics.</p>
@@ -443,7 +443,7 @@ export default function Analytics() {
 
       {/* Connection Issue Warning */}
       {error && (
-        <div className="rounded-2xl border border-red-200 dark:border-red-900/30 bg-red-50/50 dark:bg-red-950/20 p-4 text-sm text-red-800 dark:text-red-400 flex items-start gap-3">
+        <div className="rounded-xl border border-red-200 dark:border-red-900/30 bg-red-50/50 dark:bg-red-955/20 p-3 text-sm text-red-800 dark:text-red-400 flex items-start gap-3">
           <AlertCircle className="h-5 w-5 text-red-600 shrink-0 mt-0.5" />
           <div>
             <p className="font-bold">System Sync Issue</p>
@@ -453,7 +453,7 @@ export default function Analytics() {
       )}
 
       {loading ? (
-        <div className="flex flex-col items-center justify-center py-20 bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-sm">
+        <div className="flex flex-col items-center justify-center py-12 bg-white dark:bg-slate-900 rounded-xl border border-gray-200 dark:border-slate-800 shadow-sm">
           <Loader2 className="h-10 w-10 animate-spin text-amber-500 mb-3" />
           <p className="text-sm font-semibold tracking-wider text-gray-400 dark:text-slate-500 font-mono uppercase">Analyzing Fleet Diagnostics...</p>
         </div>
@@ -464,10 +464,10 @@ export default function Analytics() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
             
             {/* 1. Fuel Efficiency */}
-            <div className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-850 rounded-2xl p-5 shadow-sm hover:border-amber-400 transition-all duration-300">
+            <div className="bg-white dark:bg-slate-900 border border-gray-250 dark:border-slate-850 rounded-xl p-4 shadow-sm hover:border-amber-400 transition-all duration-300">
               <div className="flex justify-between items-start">
                 <span className="text-xs font-bold text-gray-400 dark:text-slate-500 uppercase tracking-wider font-mono">Fuel Efficiency</span>
-                <Flame className="h-5 w-5 text-amber-500" />
+                <Flame className="h-5 w-5 text-slate-500" />
               </div>
               <div className="text-3xl font-bold text-gray-900 dark:text-slate-100 font-mono mt-3 tracking-tight">
                 {fuelEfficiency.toFixed(1)} <span className="text-xs text-gray-500 dark:text-slate-400 font-sans">km/l</span>
@@ -476,7 +476,7 @@ export default function Analytics() {
             </div>
 
             {/* 2. Fleet Utilization */}
-            <div className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-850 rounded-2xl p-5 shadow-sm hover:border-amber-400 transition-all duration-300">
+            <div className="bg-white dark:bg-slate-900 border border-gray-255 dark:border-slate-850 rounded-xl p-4 shadow-sm hover:border-amber-400 transition-all duration-300">
               <div className="flex justify-between items-start">
                 <span className="text-xs font-bold text-gray-400 dark:text-slate-500 uppercase tracking-wider font-mono">Fleet Utilization</span>
                 <Gauge className="h-5 w-5 text-blue-500" />
@@ -488,10 +488,10 @@ export default function Analytics() {
             </div>
 
             {/* 3. Operational Cost */}
-            <div className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-850 rounded-2xl p-5 shadow-sm hover:border-amber-400 transition-all duration-300">
+            <div className="bg-white dark:bg-slate-900 border border-gray-250 dark:border-slate-850 rounded-xl p-4 shadow-sm hover:border-amber-400 transition-all duration-300">
               <div className="flex justify-between items-start">
                 <span className="text-xs font-bold text-gray-400 dark:text-slate-500 uppercase tracking-wider font-mono">Operational Cost</span>
-                <DollarSign className="h-5 w-5 text-emerald-500" />
+                <DollarSign className="h-5 w-5 text-slate-500" />
               </div>
               <div className="text-3xl font-bold text-gray-900 dark:text-slate-100 font-mono mt-3 tracking-tight">
                 ${totalOperationalCost.toLocaleString(undefined, { maximumFractionDigits: 0 })}
@@ -500,21 +500,21 @@ export default function Analytics() {
             </div>
 
             {/* 4. Average Vehicle ROI */}
-            <div className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-850 rounded-2xl p-5 shadow-sm hover:border-amber-400 transition-all duration-300 relative group">
+            <div className="bg-white dark:bg-slate-900 border border-gray-255 dark:border-slate-850 rounded-xl p-4 shadow-sm hover:border-amber-400 transition-all duration-300 relative group">
               <div className="flex justify-between items-start">
                 <span className="text-xs font-bold text-gray-400 dark:text-slate-500 uppercase tracking-wider font-mono">Avg Vehicle ROI</span>
-                <TrendingUp className="h-5 w-5 text-indigo-500" />
+                <TrendingUp className="h-5 w-5 text-green-500" />
               </div>
               <div className="text-3xl font-bold text-gray-900 dark:text-slate-100 font-mono mt-3 tracking-tight">
                 {averageROI.toFixed(1)}%
               </div>
-              <div className="flex items-center gap-1 mt-2 text-[10px] text-gray-400 dark:text-slate-500 cursor-help font-sans">
+              <div className="flex items-center gap-1 mt-2 text-[10px] text-gray-400 dark:text-slate-550 cursor-help font-sans">
                 <HelpCircle className="h-3 w-3 text-gray-400 shrink-0" />
                 <span>Hover for ROI formula</span>
               </div>
               
               {/* Formula Tooltip Popup on Hover */}
-              <div className="invisible group-hover:visible absolute left-0 bottom-full mb-2 bg-gray-950 text-white text-[10px] rounded-xl p-3 shadow-lg z-50 max-w-xs space-y-1 font-mono transition-opacity duration-200 border border-gray-800">
+              <div className="invisible group-hover:visible absolute left-0 bottom-full mb-2 bg-gray-950 text-white text-[10px] rounded-xl p-3 shadow-sm z-50 max-w-xs space-y-1 font-mono transition-opacity duration-200 border border-gray-800">
                 <p className="font-bold text-amber-400 font-sans">ROI Equation:</p>
                 <p>(Revenue - (Maintenance + Fuel)) / Acq. Cost</p>
                 <p className="border-t border-gray-700 pt-1 mt-1 text-[9px] text-gray-400 font-sans">
@@ -528,8 +528,8 @@ export default function Analytics() {
           {/* Bottom row layouts */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
             
-            {/* LEFT — Monthly Revenue Chart (Bar) */}
-            <div className="lg:col-span-7 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm space-y-4">
+            {/* Monthly Operating Revenue Bar chart */}
+            <div className="lg:col-span-7 bg-white dark:bg-slate-900 border border-gray-250 dark:border-slate-800 rounded-xl p-5 shadow-sm space-y-4">
               <div className="border-b border-gray-100 dark:border-slate-850 pb-3 flex justify-between items-center">
                 <h3 className="text-base font-bold text-gray-900 dark:text-slate-100 font-sans">Monthly Revenue Trend</h3>
                 <span className="text-[9px] font-mono bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800/30 text-amber-800 dark:text-amber-450 px-2 py-0.5 rounded uppercase font-bold">
@@ -564,8 +564,8 @@ export default function Analytics() {
               )}
             </div>
 
-            {/* RIGHT — Top Costliest Vehicles list */}
-            <div className="lg:col-span-5 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm space-y-4">
+            {/* Top Costliest Vehicles list */}
+            <div className="lg:col-span-5 bg-white dark:bg-slate-900 border border-gray-255 dark:border-slate-800 rounded-xl p-5 shadow-sm space-y-4">
               <div className="border-b border-gray-100 pb-3 flex justify-between items-center">
                 <h3 className="text-base font-bold text-gray-900 dark:text-slate-100 font-sans">Top Costliest Vehicles</h3>
                 <span className="text-[9px] font-mono bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-800/30 text-red-850 dark:text-red-400 px-2 py-0.5 rounded uppercase font-bold">

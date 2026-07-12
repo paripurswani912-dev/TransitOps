@@ -466,7 +466,7 @@ export default function Fleet() {
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
             onClick={handleOpenAddDrawer}
-            className="inline-flex items-center justify-center gap-2 rounded-2xl bg-amber-500 px-5 py-3 text-sm font-bold text-gray-900 shadow-md hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 transition-all duration-300 ease-out cursor-pointer select-none shrink-0"
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-amber-500 px-4 py-2.5 text-sm font-bold text-gray-900 shadow-sm hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 transition-all duration-300 ease-out cursor-pointer select-none shrink-0"
           >
             <Plus className="h-4.5 w-4.5 stroke-[2.5]" />
             <span>Add Vehicle</span>
@@ -476,7 +476,7 @@ export default function Fleet() {
 
       {/* Database Error Alert */}
       {error && (
-        <div className="rounded-2xl border border-red-200 dark:border-red-900/30 bg-red-50/50 dark:bg-red-950/20 text-sm text-red-800 dark:text-red-400 flex items-start gap-3">
+        <div className="rounded-xl border border-red-200 dark:border-red-900/30 bg-red-50/50 dark:bg-red-950/20 text-sm text-red-800 dark:text-red-400 flex items-start gap-3 p-3">
           <AlertCircle className="h-5 w-5 text-red-600 shrink-0 mt-0.5" />
           <div>
             <p className="font-bold">System Connection Issue</p>
@@ -486,7 +486,7 @@ export default function Fleet() {
       )}
 
       {/* Filter Row */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-gray-50/60 dark:bg-slate-800/40 p-4 rounded-2xl border border-gray-150 dark:border-slate-800">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 bg-gray-50/60 dark:bg-slate-800/40 p-3 rounded-xl border border-gray-150 dark:border-slate-800">
         {/* Search input */}
         <div className="relative">
           <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
@@ -536,13 +536,13 @@ export default function Fleet() {
 
       {/* Main Content Area */}
       {loading ? (
-        <div className="flex flex-col items-center justify-center py-20 bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-sm">
+        <div className="flex flex-col items-center justify-center py-12 bg-white dark:bg-slate-900 rounded-xl border border-gray-200 dark:border-slate-800 shadow-sm">
           <Loader2 className="h-10 w-10 animate-spin text-amber-500 mb-3" />
           <p className="text-sm font-semibold tracking-wider text-gray-400 dark:text-slate-500 font-mono uppercase">Querying Vehicle Registries...</p>
         </div>
       ) : filteredVehicles.length === 0 ? (
         /* Empty State */
-        <div className="flex flex-col items-center justify-center py-16 bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-sm text-center px-4">
+        <div className="flex flex-col items-center justify-center py-12 bg-white dark:bg-slate-900 rounded-xl border border-gray-200 dark:border-slate-800 shadow-sm text-center px-4">
           <div className="h-14 w-14 rounded-full bg-amber-50 dark:bg-amber-500/10 flex items-center justify-center text-amber-500 mb-4 animate-pulse">
             <Truck className="h-7 w-7" />
           </div>
@@ -575,7 +575,7 @@ export default function Fleet() {
         </div>
       ) : (
         /* Data Table */
-        <div className="overflow-hidden border border-gray-200 dark:border-slate-800 rounded-2xl bg-white dark:bg-slate-900 shadow-sm transition-all duration-300">
+        <div className="overflow-hidden border border-gray-200 dark:border-slate-800 rounded-xl bg-white dark:bg-slate-900 shadow-sm transition-all duration-300">
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200 dark:divide-slate-800">
               <thead className="bg-gray-50 dark:bg-slate-800/40">
@@ -635,15 +635,15 @@ export default function Fleet() {
 
                     {/* Status Pill Badge */}
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold ${v.status === 'Available' ? 'bg-emerald-50 dark:bg-emerald-950/20 text-emerald-800 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/30' :
+                      <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold ${v.status === 'Available' ? 'bg-green-50 dark:bg-green-950/20 text-green-800 dark:text-green-400 border border-green-200 dark:border-green-800/30' :
                           v.status === 'On Trip' ? 'bg-blue-50 dark:bg-blue-950/20 text-blue-800 dark:text-blue-400 border border-blue-200 dark:border-blue-800/30' :
                             v.status === 'In Shop' ? 'bg-amber-50 dark:bg-amber-950/20 text-amber-800 dark:text-amber-400 border border-amber-200 dark:border-amber-800/30' :
-                              'bg-rose-50 dark:bg-rose-950/20 text-rose-800 dark:text-rose-400 border border-rose-200 dark:border-rose-800/30'
+                              'bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-slate-350 border border-slate-200 dark:border-slate-700'
                         }`}>
-                        <span className={`h-1.5 w-1.5 rounded-full ${v.status === 'Available' ? 'bg-emerald-500' :
+                        <span className={`h-1.5 w-1.5 rounded-full ${v.status === 'Available' ? 'bg-green-500' :
                             v.status === 'On Trip' ? 'bg-blue-500' :
                               v.status === 'In Shop' ? 'bg-amber-500' :
-                                'bg-rose-500'
+                                'bg-slate-400'
                           }`}></span>
                         {v.status}
                       </span>
@@ -674,7 +674,7 @@ export default function Fleet() {
           ></div>
 
           {/* Drawer container */}
-          <div className="relative w-full max-w-md bg-white dark:bg-slate-900 shadow-2xl flex flex-col h-full z-10 animate-slide-in">
+          <div className="relative w-full max-w-md bg-white dark:bg-slate-900 shadow-sm flex flex-col h-full z-10 animate-slide-in">
             {/* Header */}
             <div className="flex items-center justify-between px-6 py-5 border-b border-gray-150 dark:border-slate-800">
               <div>

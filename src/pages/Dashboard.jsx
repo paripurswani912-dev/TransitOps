@@ -284,10 +284,10 @@ export default function Dashboard() {
   const totalFilteredVehicles = filteredVehicles.length;
 
   const vehicleStatusBreakdown = [
-    { name: 'Available', color: 'bg-emerald-500', count: statusCounts.Available },
+    { name: 'Available', color: 'bg-green-500', count: statusCounts.Available },
     { name: 'On Trip', color: 'bg-blue-500', count: statusCounts['On Trip'] },
     { name: 'In Shop', color: 'bg-amber-500', count: statusCounts['In Shop'] },
-    { name: 'Retired', color: 'bg-rose-500', count: statusCounts.Retired },
+    { name: 'Retired', color: 'bg-slate-500', count: statusCounts.Retired },
   ];
 
   // Helper to render ETA column details nicely
@@ -327,11 +327,11 @@ export default function Dashboard() {
 
   if (error) {
     return (
-      <div className="p-6 bg-rose-50 border border-rose-200 rounded-2xl flex items-start gap-3">
-        <AlertCircle className="h-5 w-5 text-rose-600 mt-0.5 shrink-0" />
+      <div className="p-4 bg-red-50 dark:bg-red-950/10 border border-red-200 dark:border-red-900/30 rounded-xl flex items-start gap-3">
+        <AlertCircle className="h-5 w-5 text-red-600 mt-0.5 shrink-0" />
         <div>
-          <h3 className="text-sm font-semibold text-rose-800">Operational Sync Error</h3>
-          <p className="text-xs text-rose-700 mt-1">{error}</p>
+          <h3 className="text-sm font-semibold text-red-800">Operational Sync Error</h3>
+          <p className="text-xs text-red-700 mt-1">{error}</p>
         </div>
       </div>
     );
@@ -348,7 +348,7 @@ export default function Dashboard() {
       </div>
 
       {/* Filter Row */}
-      <div className="flex flex-col md:flex-row items-stretch md:items-center gap-4 bg-gray-50 dark:bg-slate-800/40 border border-gray-200 dark:border-slate-800 p-4 rounded-2xl">
+      <div className="flex flex-col md:flex-row items-stretch md:items-center gap-4 bg-gray-50 dark:bg-slate-800/40 border border-gray-200 dark:border-slate-800 p-3 rounded-xl">
         <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-slate-300 font-semibold whitespace-nowrap pl-1">
           <Filter className="h-4.5 w-4.5 text-amber-500" />
           <span>Filters:</span>
@@ -406,19 +406,19 @@ export default function Dashboard() {
       </div>
 
       {/* KPI Cards Row (7 cards) */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3">
         {[
-          { label: 'Active Vehicles', value: activeVehiclesCount, borderColor: 'border-t-indigo-500' },
-          { label: 'Available Vehicles', value: availableVehiclesCount, borderColor: 'border-t-emerald-500' },
-          { label: 'Vehicles in Shop', value: vehiclesInMaintenanceCount, borderColor: 'border-t-amber-500' },
-          { label: 'Active Trips', value: activeTripsCount, borderColor: 'border-t-blue-500' },
-          { label: 'Pending Trips', value: pendingTripsCount, borderColor: 'border-t-purple-500' },
-          { label: 'Drivers On Duty', value: driversOnDutyCount, borderColor: 'border-t-teal-500' },
-          { label: 'Fleet Utilization', value: `${fleetUtilization}%`, borderColor: 'border-t-rose-500' },
+          { label: 'Active Vehicles', value: activeVehiclesCount, attention: false },
+          { label: 'Available Vehicles', value: availableVehiclesCount, attention: false },
+          { label: 'Vehicles in Shop', value: vehiclesInMaintenanceCount, attention: true },
+          { label: 'Active Trips', value: activeTripsCount, attention: false },
+          { label: 'Pending Trips', value: pendingTripsCount, attention: true },
+          { label: 'Drivers On Duty', value: driversOnDutyCount, attention: false },
+          { label: 'Fleet Utilization', value: `${fleetUtilization}%`, attention: false },
         ].map((card, idx) => (
           <div
             key={idx}
-            className={`bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl p-4 shadow-sm hover:shadow-md transition-all duration-200 border-t-4 ${card.borderColor} flex flex-col justify-between`}
+            className={`bg-white dark:bg-slate-900 border border-gray-250 dark:border-slate-800 rounded-xl p-3 shadow-sm transition-all duration-200 flex flex-col justify-between ${card.attention ? 'border-t-4 border-t-amber-500' : ''}`}
           >
             <div className="text-3xl font-bold text-gray-900 dark:text-slate-100 font-mono tracking-tight">
               {card.value}
@@ -433,7 +433,7 @@ export default function Dashboard() {
       {/* Two Column Lower Section */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left Column: Recent Trips Table */}
-        <div className="lg:col-span-2 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl shadow-sm overflow-hidden flex flex-col">
+        <div className="lg:col-span-2 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-xl shadow-sm overflow-hidden flex flex-col">
           <div className="p-5 border-b border-gray-100 dark:border-slate-800 flex items-center justify-between">
             <h3 className="font-bold text-gray-900 dark:text-slate-100 flex items-center gap-2">
               <Send className="h-5 w-5 text-amber-500" />
@@ -465,10 +465,10 @@ export default function Dashboard() {
                      const vehicle = vehicles.find(v => v.regNo === trip.vehicleId);
                      const driver = drivers.find(d => (d.id || d.uid) === trip.driverId);
 
-                     let statusColor = 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300';
+                     let statusColor = 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 border border-gray-200 dark:border-slate-700';
                      if (trip.status === 'Dispatched') statusColor = 'bg-blue-50 dark:bg-blue-950/20 text-blue-700 dark:text-blue-400 font-semibold border border-blue-200/30';
-                     if (trip.status === 'Completed') statusColor = 'bg-emerald-50 dark:bg-emerald-950/20 text-emerald-700 dark:text-emerald-400 font-semibold border border-emerald-200/30';
-                     if (trip.status === 'Cancelled') statusColor = 'bg-rose-50 dark:bg-rose-950/20 text-rose-700 dark:text-rose-400 font-semibold border border-rose-200/30';
+                     if (trip.status === 'Completed') statusColor = 'bg-green-50 dark:bg-green-950/20 text-green-700 dark:text-green-400 font-semibold border border-green-200/30';
+                     if (trip.status === 'Cancelled') statusColor = 'bg-red-50 dark:bg-red-950/20 text-red-700 dark:text-red-400 font-semibold border border-red-200/30';
 
                      return (
                       <tr key={trip.id} className="hover:bg-gray-50/50 dark:hover:bg-slate-800/30 transition-colors">
@@ -518,7 +518,7 @@ export default function Dashboard() {
         </div>
 
         {/* Right Column: Vehicle Status horizontal bar breakdown */}
-        <div className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl shadow-sm p-5 flex flex-col justify-between">
+        <div className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-xl shadow-sm p-4 flex flex-col justify-between">
           <div>
             <h3 className="font-bold text-gray-900 dark:text-slate-100 flex items-center gap-2 mb-1">
               <Truck className="h-5 w-5 text-amber-500" />

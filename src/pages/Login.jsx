@@ -99,7 +99,7 @@ export default function Login() {
           </div>
 
           {/* RBAC List Section */}
-          <div className="rounded-2xl border border-gray-800 bg-gray-900/40 p-5 space-y-4">
+          <div className="rounded-xl border border-gray-800 bg-gray-900/40 p-4 space-y-3">
             <h2 className="text-sm font-semibold tracking-wider uppercase text-gray-400 font-mono">
               One login, four roles
             </h2>
@@ -185,7 +185,7 @@ export default function Login() {
 
           {/* Failed Attempts Lockout Box / Custom Error State Callout */}
           {(isLocked || error) && (
-            <div className="mb-6 rounded-2xl border border-red-200 bg-red-50/50 p-4 text-sm text-red-800 flex items-start gap-3">
+            <div className="mb-6 rounded-xl border border-red-200 bg-red-50/50 p-3 text-sm text-red-800 flex items-start gap-3">
               <ShieldAlert className="h-5 w-5 text-red-600 shrink-0 mt-0.5" />
               <div className="flex-1 space-y-1">
                 <p className="font-bold">
@@ -212,7 +212,7 @@ export default function Login() {
           )}
 
           {successMessage && (
-            <div className="mb-6 rounded-2xl border border-green-200 bg-green-50 p-4 text-sm text-green-800 flex items-center gap-3">
+            <div className="mb-6 rounded-xl border border-green-200 bg-green-50 p-3 text-sm text-green-800 flex items-center gap-3">
               <Info className="h-5 w-5 text-green-600" />
               <p className="font-bold">{successMessage}</p>
             </div>
@@ -237,7 +237,7 @@ export default function Login() {
                     onChange={(e) => setName(e.target.value)}
                     disabled={isLocked || submitting}
                     placeholder="Enter full name"
-                    className="w-full rounded-2xl border border-gray-200 bg-white py-3 pl-10 pr-4 text-sm text-gray-900 placeholder-gray-400 outline-none transition-all focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 disabled:bg-gray-50 disabled:cursor-not-allowed"
+                    className="w-full rounded-xl border border-gray-200 bg-white py-3 pl-10 pr-4 text-sm text-gray-900 placeholder-gray-400 outline-none transition-all focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 disabled:bg-gray-50 disabled:cursor-not-allowed"
                   />
                 </div>
               </div>
@@ -259,7 +259,7 @@ export default function Login() {
                   onChange={(e) => setEmail(e.target.value)}
                   disabled={isLocked || submitting}
                   placeholder="admin@transitops.com"
-                  className="w-full rounded-2xl border border-gray-200 bg-white py-3 pl-10 pr-4 text-sm text-gray-900 placeholder-gray-400 outline-none transition-all focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 disabled:bg-gray-50 disabled:cursor-not-allowed"
+                  className="w-full rounded-xl border border-gray-200 bg-white py-3 pl-10 pr-4 text-sm text-gray-900 placeholder-gray-400 outline-none transition-all focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 disabled:bg-gray-50 disabled:cursor-not-allowed"
                 />
               </div>
             </div>
@@ -287,7 +287,7 @@ export default function Login() {
                   onChange={(e) => setPassword(e.target.value)}
                   disabled={isLocked || submitting}
                   placeholder="••••••••"
-                  className="w-full rounded-2xl border border-gray-200 bg-white py-3 pl-10 pr-10 text-sm text-gray-900 placeholder-gray-400 outline-none transition-all focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 disabled:bg-gray-50 disabled:cursor-not-allowed"
+                  className="w-full rounded-xl border border-gray-200 bg-white py-3 pl-10 pr-10 text-sm text-gray-900 placeholder-gray-400 outline-none transition-all focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 disabled:bg-gray-50 disabled:cursor-not-allowed"
                 />
                 <button
                   type="button"
@@ -309,7 +309,7 @@ export default function Login() {
                 value={demoRole}
                 onChange={(e) => setDemoRole(e.target.value)}
                 disabled={isLocked || submitting}
-                className="w-full rounded-2xl border border-gray-200 bg-white py-3 px-4 text-sm text-gray-900 outline-none transition-all focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 font-mono disabled:bg-gray-50 disabled:cursor-not-allowed"
+                className="w-full rounded-xl border border-gray-200 bg-white py-3 px-4 text-sm text-gray-900 outline-none transition-all focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 font-mono disabled:bg-gray-50 disabled:cursor-not-allowed"
               >
                 <option value="FleetManager">FleetManager (Fleet, Maintenance)</option>
                 <option value="Dispatcher">Dispatcher (Dashboard, Trips)</option>
@@ -342,7 +342,7 @@ export default function Login() {
               id="btn-login-submit"
               type="submit"
               disabled={isLocked || submitting}
-              className="w-full rounded-2xl bg-amber-500 py-3 text-sm font-bold text-gray-900 border border-transparent shadow-sm hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 transition-all duration-300 ease-out btn-magnetic disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed disabled:transform-none"
+              className="w-full rounded-xl bg-amber-500 py-3 text-sm font-bold text-gray-900 border border-transparent shadow-sm hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 transition-all duration-300 ease-out btn-magnetic disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed disabled:transform-none"
             >
               {submitting ? 'Authenticating secure login...' : mode === 'signin' ? 'Sign In' : 'Create Account'}
             </button>
