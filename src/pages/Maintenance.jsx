@@ -304,38 +304,38 @@ export default function Maintenance() {
     <div className="space-y-6">
       {/* Title Header */}
       <div>
-        <h2 className="text-2xl font-bold text-gray-900 tracking-tight font-sans">Maintenance Logs</h2>
-        <p className="text-sm text-gray-500 mt-1">Configure vehicle repairs, service costs, and shop status.</p>
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-slate-100 tracking-tight font-sans">Maintenance Logs</h2>
+        <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">Configure vehicle repairs, service costs, and shop status.</p>
       </div>
 
       {/* Database Error Alert */}
       {error && (
-        <div className="rounded-2xl border border-red-200 bg-red-50/50 p-4 text-sm text-red-800 flex items-start gap-3">
+        <div className="rounded-2xl border border-red-200 dark:border-red-900/30 bg-red-50/50 dark:bg-red-950/20 p-4 text-sm text-red-800 dark:text-red-400 flex items-start gap-3">
           <AlertCircle className="h-5 w-5 text-red-600 shrink-0 mt-0.5" />
           <div>
             <p className="font-bold">System Connection Issue</p>
-            <p className="text-xs text-red-600 mt-1">{error}</p>
+            <p className="text-xs text-red-600 dark:text-red-400 mt-1">{error}</p>
           </div>
         </div>
       )}
 
       {loading ? (
-        <div className="flex flex-col items-center justify-center py-20 bg-white rounded-2xl border border-gray-200 shadow-sm">
+        <div className="flex flex-col items-center justify-center py-20 bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-sm">
           <Loader2 className="h-10 w-10 animate-spin text-amber-500 mb-3" />
-          <p className="text-sm font-semibold tracking-wider text-gray-400 font-mono uppercase">Syncing Maintenance Hub...</p>
+          <p className="text-sm font-semibold tracking-wider text-gray-400 dark:text-slate-500 font-mono uppercase">Syncing Maintenance Hub...</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           
           {/* LEFT COLUMN - Form */}
-          <section className="lg:col-span-5 bg-white border border-gray-200 rounded-2xl p-6 shadow-sm space-y-6">
-            <div className="border-b border-gray-100 pb-4">
-              <h3 className="text-lg font-bold text-gray-900 font-sans">Log Service Record</h3>
-              <p className="text-xs text-gray-400 mt-1 font-mono">Stage: Shop Intake Portal</p>
+          <section className="lg:col-span-5 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm space-y-6">
+            <div className="border-b border-gray-100 dark:border-slate-800 pb-4">
+              <h3 className="text-lg font-bold text-gray-900 dark:text-slate-100 font-sans">Log Service Record</h3>
+              <p className="text-xs text-gray-400 dark:text-slate-550 mt-1 font-mono">Stage: Shop Intake Portal</p>
             </div>
 
             {formError && (
-              <div className="rounded-xl border border-red-200 bg-red-50/60 p-3 text-xs text-red-800 flex items-start gap-2">
+              <div className="rounded-xl border border-red-200 dark:border-red-900/30 bg-red-50/60 dark:bg-red-955/20 p-3 text-xs text-red-800 dark:text-red-400 flex items-start gap-2">
                 <AlertCircle className="h-4.5 w-4.5 text-red-600 shrink-0 mt-0.5" />
                 <p className="font-bold">{formError}</p>
               </div>
@@ -343,11 +343,11 @@ export default function Maintenance() {
 
             {/* Read-Only Warning Banner */}
             {isReadOnly && (
-              <div className="rounded-xl border border-blue-200 bg-blue-50/50 p-4 text-xs text-blue-800 flex items-start gap-2.5">
+              <div className="rounded-xl border border-blue-200 dark:border-blue-900/30 bg-blue-50/50 dark:bg-blue-955/20 p-4 text-xs text-blue-800 dark:text-blue-400 flex items-start gap-2.5">
                 <Info className="h-4.5 w-4.5 text-blue-600 shrink-0 mt-0.5" />
                 <div>
                   <p className="font-bold">Read-Only Workspace</p>
-                  <p className="text-xs text-blue-600 mt-1">You can review service history and active maintenance tasks, but logging new records is locked.</p>
+                  <p className="text-xs text-blue-600 dark:text-blue-400 mt-1">You can review service history and active maintenance tasks, but logging new records is locked.</p>
                 </div>
               </div>
             )}
@@ -356,13 +356,13 @@ export default function Maintenance() {
               
               {/* Vehicle Dropdown (All Vehicles shown with current status label) */}
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 font-mono mb-1.5">Vehicle</label>
+                <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-slate-400 font-mono mb-1.5">Vehicle</label>
                 <select
                   value={selectedVehicleId}
                   required
                   disabled={isReadOnly}
                   onChange={(e) => setSelectedVehicleId(e.target.value)}
-                  className="w-full rounded-xl border border-gray-200 bg-white py-2.5 px-3 text-sm text-gray-900 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 font-mono disabled:bg-gray-50 disabled:text-gray-400 disabled:cursor-not-allowed"
+                  className="w-full rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-850 py-2.5 px-3 text-sm text-gray-900 dark:text-slate-100 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 font-mono disabled:bg-gray-50 dark:disabled:bg-slate-800 disabled:text-gray-400 dark:disabled:text-slate-500 disabled:cursor-not-allowed"
                 >
                   <option value="">-- Select Vehicle (All) --</option>
                   {vehicles.map((v) => (
@@ -376,12 +376,12 @@ export default function Maintenance() {
               {/* Service Type */}
               <div className="grid grid-cols-1 gap-4">
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 font-mono mb-1.5">Service Type</label>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-slate-400 font-mono mb-1.5">Service Type</label>
                   <select
                     value={serviceType}
                     disabled={isReadOnly}
                     onChange={(e) => setServiceType(e.target.value)}
-                    className="w-full rounded-xl border border-gray-200 bg-white py-2.5 px-3 text-sm text-gray-900 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 font-sans disabled:bg-gray-50 disabled:text-gray-400 disabled:cursor-not-allowed"
+                    className="w-full rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-850 py-2.5 px-3 text-sm text-gray-900 dark:text-slate-100 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 font-sans disabled:bg-gray-50 dark:disabled:bg-slate-800 disabled:text-gray-400 dark:disabled:text-slate-550 disabled:cursor-not-allowed"
                   >
                     <option value="Oil Change">Oil Change</option>
                     <option value="Engine Repair">Engine Repair</option>
@@ -393,7 +393,7 @@ export default function Maintenance() {
 
                 {serviceType === 'Other' && (
                   <div className="animate-slide-in">
-                    <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 font-mono mb-1.5">Specify Custom Service</label>
+                    <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-slate-400 font-mono mb-1.5">Specify Custom Service</label>
                     <input
                       type="text"
                       required
@@ -401,7 +401,7 @@ export default function Maintenance() {
                       value={customServiceType}
                       onChange={(e) => setCustomServiceType(e.target.value)}
                       placeholder="e.g. Brake Replacement"
-                      className="w-full rounded-xl border border-gray-200 bg-white py-2 px-3 text-sm text-gray-900 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 font-sans disabled:bg-gray-50 disabled:text-gray-400 disabled:cursor-not-allowed"
+                      className="w-full rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-850 py-2 px-3 text-sm text-gray-900 dark:text-slate-100 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 font-sans disabled:bg-gray-50 dark:disabled:bg-slate-800 disabled:text-gray-400 dark:disabled:text-slate-550 disabled:cursor-not-allowed"
                     />
                   </div>
                 )}
@@ -410,7 +410,7 @@ export default function Maintenance() {
               {/* Cost & Date */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 font-mono mb-1.5">Cost ($)</label>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-slate-400 font-mono mb-1.5">Cost ($)</label>
                   <input
                     type="number"
                     required
@@ -420,25 +420,25 @@ export default function Maintenance() {
                     value={cost}
                     onChange={(e) => setCost(e.target.value)}
                     placeholder="e.g. 250"
-                    className="w-full rounded-xl border border-gray-200 bg-white py-2 px-3 text-sm text-gray-900 placeholder-gray-400 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 font-mono disabled:bg-gray-50 disabled:text-gray-400 disabled:cursor-not-allowed"
+                    className="w-full rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-850 py-2 px-3 text-sm text-gray-900 dark:text-slate-100 placeholder-gray-400 dark:placeholder-gray-500 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 font-mono disabled:bg-gray-50 dark:disabled:bg-slate-800 disabled:text-gray-400 dark:disabled:text-slate-550 disabled:cursor-not-allowed"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 font-mono mb-1.5">Date</label>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-slate-400 font-mono mb-1.5">Date</label>
                   <input
                     type="date"
                     required
                     disabled={isReadOnly}
                     value={date}
                     onChange={(e) => setDate(e.target.value)}
-                    className="w-full rounded-xl border border-gray-200 bg-white py-2 px-3 text-sm text-gray-900 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 font-mono disabled:bg-gray-50 disabled:text-gray-400 disabled:cursor-not-allowed"
+                    className="w-full rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-850 py-2 px-3 text-sm text-gray-900 dark:text-slate-100 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 font-mono disabled:bg-gray-50 dark:disabled:bg-slate-800 disabled:text-gray-400 dark:disabled:text-slate-550 disabled:cursor-not-allowed"
                   />
                 </div>
               </div>
 
               {/* Status */}
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 font-mono mb-1.5">Maintenance Status</label>
+                <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-slate-400 font-mono mb-1.5">Maintenance Status</label>
                 <select
                   value={status}
                   disabled={isReadOnly}
@@ -457,7 +457,7 @@ export default function Maintenance() {
                 onMouseLeave={handleMouseLeave}
                 type="submit"
                 disabled={isReadOnly || isSaving}
-                className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-amber-500 py-3 text-sm font-bold text-gray-900 border border-transparent shadow-sm hover:bg-amber-600 transition-all duration-300 ease-out btn-magnetic disabled:bg-gray-150 disabled:text-gray-400 disabled:cursor-not-allowed cursor-pointer"
+                className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-amber-500 py-3 text-sm font-bold text-gray-900 border border-transparent shadow-sm hover:bg-amber-600 transition-all duration-300 ease-out btn-magnetic disabled:bg-gray-150 dark:disabled:bg-slate-800 disabled:text-gray-400 dark:disabled:text-slate-500 disabled:cursor-not-allowed cursor-pointer"
               >
                 {isSaving ? (
                   <>
@@ -475,7 +475,7 @@ export default function Maintenance() {
             </form>
 
             {/* Visual note below the form */}
-            <div className="flex flex-col gap-2 bg-gray-50 border border-gray-250 p-4 rounded-xl text-xs text-gray-600 font-sans">
+            <div className="flex flex-col gap-2 bg-gray-50 dark:bg-slate-800/30 border border-gray-250 dark:border-slate-800 p-4 rounded-xl text-xs text-gray-600 dark:text-slate-350 font-sans">
               <div className="flex items-start gap-2">
                 <Info className="h-4 w-4 text-gray-400 shrink-0 mt-0.5" />
                 <span>
@@ -483,7 +483,7 @@ export default function Maintenance() {
                 </span>
               </div>
               {/* Transition Caption text diagram */}
-              <div className="border-t border-gray-200 pt-2 mt-1 flex items-center justify-center gap-1.5 font-mono text-[10px] text-gray-400">
+              <div className="border-t border-gray-200 dark:border-slate-800 pt-2 mt-1 flex items-center justify-center gap-1.5 font-mono text-[10px] text-gray-450 dark:text-slate-500">
                 <span>Available</span>
                 <ArrowRight className="h-3 w-3 text-gray-300" />
                 <span className="text-amber-500 font-bold">In Shop</span>
@@ -500,10 +500,10 @@ export default function Maintenance() {
           <section className="lg:col-span-7 space-y-4">
             
             {/* Header & Search */}
-            <div className="bg-white border border-gray-200 p-4 rounded-2xl shadow-sm space-y-3.5">
+            <div className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm space-y-3.5">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-bold text-gray-900 font-sans">Service History</h3>
-                <span className="text-[10px] font-mono bg-amber-50 border border-amber-200 text-amber-800 px-2 py-0.5 rounded-md uppercase font-bold">
+                <h3 className="text-lg font-bold text-gray-900 dark:text-slate-100 font-sans">Service History</h3>
+                <span className="text-[10px] font-mono bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-850/30 text-amber-800 dark:text-amber-400 px-2 py-0.5 rounded-md uppercase font-bold">
                   intake register
                 </span>
               </div>
@@ -518,55 +518,55 @@ export default function Maintenance() {
                   placeholder="Search by vehicle ID, name, or service..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full rounded-xl border border-gray-200 bg-white py-2 pl-10 pr-4 text-sm text-gray-900 placeholder-gray-400 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 font-sans"
+                  className="w-full rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-850 py-2 pl-10 pr-4 text-sm text-gray-900 dark:text-slate-100 placeholder-gray-400 dark:placeholder-gray-550 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 font-sans"
                 />
               </div>
             </div>
 
             {/* Service Log Table */}
             {filteredLogs.length === 0 ? (
-              <div className="flex flex-col items-center justify-center py-20 bg-white rounded-2xl border border-gray-200 shadow-sm text-center">
-                <Info className="h-8 w-8 text-gray-300 mb-2 animate-bounce" />
-                <p className="text-sm font-semibold text-gray-400 font-mono uppercase">No maintenance logs found</p>
+              <div className="flex flex-col items-center justify-center py-20 bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-sm text-center">
+                <Info className="h-8 w-8 text-gray-300 dark:text-slate-550 mb-2 animate-bounce" />
+                <p className="text-sm font-semibold text-gray-400 dark:text-slate-500 font-mono uppercase">No maintenance logs found</p>
               </div>
             ) : (
-              <div className="overflow-hidden border border-gray-200 rounded-2xl bg-white shadow-sm">
+              <div className="overflow-hidden border border-gray-200 dark:border-slate-800 rounded-2xl bg-white dark:bg-slate-900 shadow-sm">
                 <div className="overflow-x-auto">
-                  <table className="min-w-full divide-y divide-gray-200">
-                    <thead className="bg-gray-50">
+                  <table className="min-w-full divide-y divide-gray-200 dark:divide-slate-800">
+                    <thead className="bg-gray-50 dark:bg-slate-800/40">
                       <tr>
-                        <th scope="col" className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-500 font-mono">Vehicle</th>
-                        <th scope="col" className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-500 font-mono">Service Details</th>
-                        <th scope="col" className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-500 font-mono">Cost</th>
-                        <th scope="col" className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-500 font-mono">Status</th>
-                        <th scope="col" className="px-6 py-4 text-center text-xs font-bold uppercase tracking-wider text-gray-500 font-mono">Action</th>
+                        <th scope="col" className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-slate-400 font-mono">Vehicle</th>
+                        <th scope="col" className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-slate-400 font-mono">Service Details</th>
+                        <th scope="col" className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-slate-400 font-mono">Cost</th>
+                        <th scope="col" className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-slate-400 font-mono">Status</th>
+                        <th scope="col" className="px-6 py-4 text-center text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-slate-400 font-mono">Action</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-gray-200 text-sm font-sans">
+                    <tbody className="divide-y divide-gray-200 dark:divide-slate-800 text-sm font-sans">
                       {filteredLogs.map((log) => {
                         const vehicleObj = vehicles.find((v) => v.regNo === log.vehicleId);
                         return (
-                          <tr key={log.id} className="hover:bg-amber-50/10 transition-colors duration-150">
+                          <tr key={log.id} className="hover:bg-amber-50/10 dark:hover:bg-amber-955/15 transition-colors duration-150">
                             
                             {/* Vehicle ID & Name in bold mono */}
                             <td className="px-6 py-4 whitespace-nowrap">
-                              <span className="font-mono font-bold text-gray-900 block">{log.vehicleId}</span>
+                              <span className="font-mono font-bold text-gray-900 dark:text-slate-100 block">{log.vehicleId}</span>
                               {vehicleObj && (
-                                <span className="text-xs text-gray-400 block mt-0.5">({vehicleObj.name})</span>
+                                <span className="text-xs text-gray-400 dark:text-slate-500 block mt-0.5">({vehicleObj.name})</span>
                               )}
                             </td>
 
                             {/* Service Details & Date */}
                             <td className="px-6 py-4">
-                              <span className="font-semibold text-gray-800 block">{log.serviceType}</span>
-                              <span className="text-[10px] text-gray-400 font-mono block mt-1 flex items-center gap-1.5">
+                              <span className="font-semibold text-gray-800 dark:text-slate-205 block">{log.serviceType}</span>
+                              <span className="text-[10px] text-gray-400 dark:text-slate-500 font-mono block mt-1 flex items-center gap-1.5">
                                 <Calendar className="h-3 w-3 text-gray-300" />
                                 {log.date}
                               </span>
                             </td>
 
                             {/* Cost in JetBrains Mono */}
-                            <td className="px-6 py-4 whitespace-nowrap font-mono font-medium text-gray-800">
+                            <td className="px-6 py-4 whitespace-nowrap font-mono font-medium text-gray-800 dark:text-slate-300">
                               ${log.cost.toLocaleString(undefined, { minimumFractionDigits: 2 })}
                             </td>
 
@@ -590,7 +590,7 @@ export default function Maintenance() {
                                 <button
                                   onClick={() => handleMarkComplete(log)}
                                   disabled={updatingLogId === log.id}
-                                  className="inline-flex items-center gap-1 px-3 py-1.5 bg-emerald-500 text-white rounded-lg font-bold hover:bg-emerald-600 transition-colors shadow-xs cursor-pointer disabled:bg-gray-150 disabled:text-gray-400 disabled:cursor-not-allowed"
+                                  className="inline-flex items-center gap-1 px-3 py-1.5 bg-emerald-500 text-white rounded-lg font-bold hover:bg-emerald-600 transition-colors shadow-xs cursor-pointer disabled:bg-gray-150 dark:disabled:bg-slate-800 disabled:text-gray-400 dark:disabled:text-slate-500 disabled:cursor-not-allowed"
                                 >
                                   {updatingLogId === log.id ? (
                                     <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -600,9 +600,9 @@ export default function Maintenance() {
                                   <span>Mark Complete</span>
                                 </button>
                               ) : log.status === 'In Progress' ? (
-                                <span className="text-gray-400 font-medium italic text-[11px]">In Progress</span>
+                                <span className="text-gray-400 dark:text-slate-550 font-medium italic text-[11px]">In Progress</span>
                               ) : (
-                                <span className="text-emerald-600 font-semibold text-[11px]">Service Completed</span>
+                                <span className="text-emerald-600 dark:text-emerald-400 font-semibold text-[11px]">Service Completed</span>
                               )}
                             </td>
 

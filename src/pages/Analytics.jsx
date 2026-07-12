@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import { db } from '../firebase';
 import { collection, onSnapshot } from 'firebase/firestore';
 import { REVENUE_PER_TRIP } from '../constants/finance';
@@ -49,6 +50,7 @@ const defaultMockFuelLogs = [
 
 export default function Analytics() {
   const { isMock } = useAuth();
+  const { theme } = useTheme();
 
   // Collections state
   const [vehicles, setVehicles] = useState([]);
@@ -296,10 +298,10 @@ export default function Analytics() {
     <div className="space-y-6">
       
       {/* Title & Action Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white border border-gray-250 p-5 rounded-2xl shadow-sm">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white dark:bg-slate-900 border border-gray-250 dark:border-slate-800 p-5 rounded-2xl shadow-sm">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 tracking-tight font-sans">Reports & Analytics</h2>
-          <p className="text-sm text-gray-500 mt-1">Review operational performance charts and ROI diagnostics.</p>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-slate-100 tracking-tight font-sans">Reports & Analytics</h2>
+          <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">Review operational performance charts and ROI diagnostics.</p>
         </div>
         <div className="flex gap-2">
           <button
@@ -321,19 +323,19 @@ export default function Analytics() {
 
       {/* Connection Issue Warning */}
       {error && (
-        <div className="rounded-2xl border border-red-200 bg-red-50/50 p-4 text-sm text-red-800 flex items-start gap-3">
+        <div className="rounded-2xl border border-red-200 dark:border-red-900/30 bg-red-50/50 dark:bg-red-950/20 p-4 text-sm text-red-800 dark:text-red-400 flex items-start gap-3">
           <AlertCircle className="h-5 w-5 text-red-600 shrink-0 mt-0.5" />
           <div>
             <p className="font-bold">System Sync Issue</p>
-            <p className="text-xs text-red-600 mt-1">{error}</p>
+            <p className="text-xs text-red-600 dark:text-red-400 mt-1">{error}</p>
           </div>
         </div>
       )}
 
       {loading ? (
-        <div className="flex flex-col items-center justify-center py-20 bg-white rounded-2xl border border-gray-200 shadow-sm">
+        <div className="flex flex-col items-center justify-center py-20 bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-sm">
           <Loader2 className="h-10 w-10 animate-spin text-amber-500 mb-3" />
-          <p className="text-sm font-semibold tracking-wider text-gray-400 font-mono uppercase">Analyzing Fleet Diagnostics...</p>
+          <p className="text-sm font-semibold tracking-wider text-gray-400 dark:text-slate-500 font-mono uppercase">Analyzing Fleet Diagnostics...</p>
         </div>
       ) : (
         <div className="space-y-8">
@@ -342,57 +344,57 @@ export default function Analytics() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
             
             {/* 1. Fuel Efficiency */}
-            <div className="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm hover:border-amber-400 transition-all duration-300">
+            <div className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-850 rounded-2xl p-5 shadow-sm hover:border-amber-400 transition-all duration-300">
               <div className="flex justify-between items-start">
-                <span className="text-xs font-bold text-gray-400 uppercase tracking-wider font-mono">Fuel Efficiency</span>
+                <span className="text-xs font-bold text-gray-400 dark:text-slate-500 uppercase tracking-wider font-mono">Fuel Efficiency</span>
                 <Flame className="h-5 w-5 text-amber-500" />
               </div>
-              <div className="text-3xl font-bold text-gray-900 font-mono mt-3 tracking-tight">
-                {fuelEfficiency.toFixed(1)} <span className="text-xs text-gray-500 font-sans">km/l</span>
+              <div className="text-3xl font-bold text-gray-900 dark:text-slate-100 font-mono mt-3 tracking-tight">
+                {fuelEfficiency.toFixed(1)} <span className="text-xs text-gray-500 dark:text-slate-400 font-sans">km/l</span>
               </div>
-              <p className="text-[10px] text-gray-400 mt-2 font-sans font-medium">Completed trips distance vs fuel liters</p>
+              <p className="text-[10px] text-gray-400 dark:text-slate-500 mt-2 font-sans font-medium">Completed trips distance vs fuel liters</p>
             </div>
 
             {/* 2. Fleet Utilization */}
-            <div className="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm hover:border-amber-400 transition-all duration-300">
+            <div className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-850 rounded-2xl p-5 shadow-sm hover:border-amber-400 transition-all duration-300">
               <div className="flex justify-between items-start">
-                <span className="text-xs font-bold text-gray-400 uppercase tracking-wider font-mono">Fleet Utilization</span>
+                <span className="text-xs font-bold text-gray-400 dark:text-slate-500 uppercase tracking-wider font-mono">Fleet Utilization</span>
                 <Gauge className="h-5 w-5 text-blue-500" />
               </div>
-              <div className="text-3xl font-bold text-gray-900 font-mono mt-3 tracking-tight">
+              <div className="text-3xl font-bold text-gray-900 dark:text-slate-100 font-mono mt-3 tracking-tight">
                 {fleetUtilization.toFixed(1)}%
               </div>
-              <p className="text-[10px] text-gray-400 mt-2 font-sans font-medium">On Trip vehicles / Non-Retired fleet</p>
+              <p className="text-[10px] text-gray-400 dark:text-slate-500 mt-2 font-sans font-medium">On Trip vehicles / Non-Retired fleet</p>
             </div>
 
             {/* 3. Operational Cost */}
-            <div className="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm hover:border-amber-400 transition-all duration-300">
+            <div className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-850 rounded-2xl p-5 shadow-sm hover:border-amber-400 transition-all duration-300">
               <div className="flex justify-between items-start">
-                <span className="text-xs font-bold text-gray-400 uppercase tracking-wider font-mono">Operational Cost</span>
+                <span className="text-xs font-bold text-gray-400 dark:text-slate-500 uppercase tracking-wider font-mono">Operational Cost</span>
                 <DollarSign className="h-5 w-5 text-emerald-500" />
               </div>
-              <div className="text-3xl font-bold text-gray-900 font-mono mt-3 tracking-tight">
+              <div className="text-3xl font-bold text-gray-900 dark:text-slate-100 font-mono mt-3 tracking-tight">
                 ${totalOperationalCost.toLocaleString(undefined, { maximumFractionDigits: 0 })}
               </div>
-              <p className="text-[10px] text-gray-400 mt-2 font-sans font-medium">Total maintenance + fuel expenses</p>
+              <p className="text-[10px] text-gray-400 dark:text-slate-500 mt-2 font-sans font-medium">Total maintenance + fuel expenses</p>
             </div>
 
             {/* 4. Average Vehicle ROI */}
-            <div className="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm hover:border-amber-400 transition-all duration-300 relative group">
+            <div className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-850 rounded-2xl p-5 shadow-sm hover:border-amber-400 transition-all duration-300 relative group">
               <div className="flex justify-between items-start">
-                <span className="text-xs font-bold text-gray-400 uppercase tracking-wider font-mono">Avg Vehicle ROI</span>
+                <span className="text-xs font-bold text-gray-400 dark:text-slate-500 uppercase tracking-wider font-mono">Avg Vehicle ROI</span>
                 <TrendingUp className="h-5 w-5 text-indigo-500" />
               </div>
-              <div className="text-3xl font-bold text-gray-900 font-mono mt-3 tracking-tight">
+              <div className="text-3xl font-bold text-gray-900 dark:text-slate-100 font-mono mt-3 tracking-tight">
                 {averageROI.toFixed(1)}%
               </div>
-              <div className="flex items-center gap-1 mt-2 text-[10px] text-gray-400 cursor-help font-sans">
+              <div className="flex items-center gap-1 mt-2 text-[10px] text-gray-400 dark:text-slate-500 cursor-help font-sans">
                 <HelpCircle className="h-3 w-3 text-gray-400 shrink-0" />
                 <span>Hover for ROI formula</span>
               </div>
               
               {/* Formula Tooltip Popup on Hover */}
-              <div className="invisible group-hover:visible absolute left-0 bottom-full mb-2 bg-gray-900 text-white text-[10px] rounded-xl p-3 shadow-lg z-50 max-w-xs space-y-1 font-mono transition-opacity duration-200 border border-gray-700">
+              <div className="invisible group-hover:visible absolute left-0 bottom-full mb-2 bg-gray-950 text-white text-[10px] rounded-xl p-3 shadow-lg z-50 max-w-xs space-y-1 font-mono transition-opacity duration-200 border border-gray-800">
                 <p className="font-bold text-amber-400 font-sans">ROI Equation:</p>
                 <p>(Revenue - (Maintenance + Fuel)) / Acq. Cost</p>
                 <p className="border-t border-gray-700 pt-1 mt-1 text-[9px] text-gray-400 font-sans">
@@ -407,10 +409,10 @@ export default function Analytics() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
             
             {/* LEFT — Monthly Revenue Chart (Bar) */}
-            <div className="lg:col-span-7 bg-white border border-gray-200 rounded-2xl p-6 shadow-sm space-y-4">
-              <div className="border-b border-gray-100 pb-3 flex justify-between items-center">
-                <h3 className="text-base font-bold text-gray-900 font-sans">Monthly Revenue Trend</h3>
-                <span className="text-[9px] font-mono bg-amber-50 border border-amber-200 text-amber-800 px-2 py-0.5 rounded uppercase font-bold">
+            <div className="lg:col-span-7 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm space-y-4">
+              <div className="border-b border-gray-100 dark:border-slate-850 pb-3 flex justify-between items-center">
+                <h3 className="text-base font-bold text-gray-900 dark:text-slate-100 font-sans">Monthly Revenue Trend</h3>
+                <span className="text-[9px] font-mono bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800/30 text-amber-800 dark:text-amber-450 px-2 py-0.5 rounded uppercase font-bold">
                   revenue ledger
                 </span>
               </div>
@@ -424,9 +426,9 @@ export default function Analytics() {
                 <div className="h-[300px] w-full font-mono text-[10px]">
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={monthlyRevenueData} margin={{ top: 10, right: 10, left: 10, bottom: 5 }}>
-                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E5E7EB" />
-                      <XAxis dataKey="name" stroke="#9CA3AF" tickLine={false} axisLine={false} />
-                      <YAxis stroke="#9CA3AF" tickLine={false} axisLine={false} tickFormatter={(val) => `$${val.toLocaleString()}`} />
+                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={theme === 'dark' ? '#334155' : '#E5E7EB'} />
+                      <XAxis dataKey="name" stroke={theme === 'dark' ? '#64748B' : '#9CA3AF'} tickLine={false} axisLine={false} />
+                      <YAxis stroke={theme === 'dark' ? '#64748B' : '#9CA3AF'} tickLine={false} axisLine={false} tickFormatter={(val) => `${val.toLocaleString()}`} />
                       <ChartTooltip 
                         formatter={(value) => [`$${value.toLocaleString()}`, 'Revenue']}
                         contentStyle={{ backgroundColor: '#111827', borderRadius: '12px', border: 'none', color: '#fff', fontSize: '10px' }}
@@ -443,10 +445,10 @@ export default function Analytics() {
             </div>
 
             {/* RIGHT — Top Costliest Vehicles list */}
-            <div className="lg:col-span-5 bg-white border border-gray-200 rounded-2xl p-6 shadow-sm space-y-4">
+            <div className="lg:col-span-5 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm space-y-4">
               <div className="border-b border-gray-100 pb-3 flex justify-between items-center">
-                <h3 className="text-base font-bold text-gray-900 font-sans">Top Costliest Vehicles</h3>
-                <span className="text-[9px] font-mono bg-red-50 border border-red-200 text-red-800 px-2 py-0.5 rounded uppercase font-bold">
+                <h3 className="text-base font-bold text-gray-900 dark:text-slate-100 font-sans">Top Costliest Vehicles</h3>
+                <span className="text-[9px] font-mono bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-800/30 text-red-850 dark:text-red-400 px-2 py-0.5 rounded uppercase font-bold">
                   drain ranker
                 </span>
               </div>
@@ -461,10 +463,10 @@ export default function Analytics() {
                   {topCostliestVehicles.filter(v => v.totalCost > 0).map((vehicle, index) => {
                     // Determine Rank Colors: rank 1 = Red, rank 2 = Amber, rank 3 = Blue, rank 4/5 = Slate
                     const rankColors = [
-                      { text: 'text-red-700 bg-red-50 border-red-200', bar: 'bg-red-500' },     // Rank 1
-                      { text: 'text-amber-700 bg-amber-50 border-amber-200', bar: 'bg-amber-500' }, // Rank 2
-                      { text: 'text-blue-700 bg-blue-50 border-blue-200', bar: 'bg-blue-500' },   // Rank 3
-                      { text: 'text-gray-700 bg-gray-50 border-gray-200', bar: 'bg-gray-400' },   // Rank 4
+                      { text: 'text-red-700 dark:text-red-400 bg-red-50 dark:bg-red-950/20 border-red-200 dark:border-red-900/30', bar: 'bg-red-500' },     // Rank 1
+                      { text: 'text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/20 border-amber-200 dark:border-amber-900/30', bar: 'bg-amber-500' }, // Rank 2
+                      { text: 'text-blue-700 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-900/30', bar: 'bg-blue-500' },   // Rank 3
+                      { text: 'text-gray-700 dark:text-slate-400 bg-gray-50 dark:bg-slate-800 border-gray-200 dark:border-slate-700', bar: 'bg-gray-400 dark:bg-slate-600' },   // Rank 4
                       { text: 'text-gray-700 bg-gray-50 border-gray-200', bar: 'bg-gray-400' }    // Rank 5
                     ];
                     const design = rankColors[index] || rankColors[4];
@@ -482,16 +484,16 @@ export default function Analytics() {
                             <span className={`h-5 w-5 rounded-md border flex items-center justify-center font-mono font-bold text-[10px] shadow-xs ${design.text}`}>
                               {index + 1}
                             </span>
-                            <span className="font-bold text-gray-900 truncate max-w-[160px]">{vehicle.name}</span>
+                            <span className="font-bold text-gray-900 dark:text-slate-100 truncate max-w-[160px]">{vehicle.name}</span>
                             <span className="font-mono text-[10px] text-gray-400 bg-gray-50 px-1.5 py-0.5 rounded border border-gray-150">{vehicle.regNo}</span>
                           </div>
-                          <span className="font-mono font-bold text-gray-800">
+                          <span className="font-mono font-bold text-gray-800 dark:text-slate-200">
                             ${vehicle.totalCost.toLocaleString(undefined, { minimumFractionDigits: 2 })}
                           </span>
                         </div>
 
                         {/* Bar Track & Progress Bar */}
-                        <div className="h-2.5 w-full bg-gray-100 rounded-full overflow-hidden border border-gray-150">
+                        <div className="h-2.5 w-full bg-gray-100 dark:bg-slate-850 rounded-full overflow-hidden border border-gray-150 dark:border-slate-800">
                           <div 
                             className={`h-full rounded-full transition-all duration-1000 ${design.bar}`}
                             style={{ width: `${percentWidth}%` }}

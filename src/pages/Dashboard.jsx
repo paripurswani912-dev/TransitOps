@@ -2,24 +2,24 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { db } from '../firebase';
 import { collection, onSnapshot } from 'firebase/firestore';
-import { 
-  Filter, 
-  MapPin, 
-  Truck, 
-  Send, 
-  Loader2, 
-  AlertCircle 
+import {
+  Filter,
+  MapPin,
+  Truck,
+  Send,
+  Loader2,
+  AlertCircle
 } from 'lucide-react';
 import { LOCATIONS } from '../constants/locations';
 
 export default function Dashboard() {
   const { isMock } = useAuth();
-  
+
   const [vehicles, setVehicles] = useState([]);
   const [drivers, setDrivers] = useState([]);
   const [trips, setTrips] = useState([]);
   const [maintenance, setMaintenance] = useState([]);
-  
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -82,7 +82,7 @@ export default function Dashboard() {
     } else {
       // Real Firebase Firestore Mode
       setLoading(true);
-      
+
       const vehiclesCol = collection(db, 'vehicles');
       const driversCol = collection(db, 'drivers');
       const tripsCol = collection(db, 'trips');
@@ -162,7 +162,7 @@ export default function Dashboard() {
       }
       return latest.source;
     }
-    
+
     // Deterministic fallback based on regNo
     let hash = 0;
     for (let i = 0; i < vehicleRegNo.length; i++) {
@@ -258,15 +258,15 @@ export default function Dashboard() {
   const vehiclesInMaintenanceCount = filteredVehicles.filter(v => v.status === 'In Shop').length;
   const activeTripsCount = filteredTrips.filter(t => t.status === 'Dispatched').length;
   const pendingTripsCount = filteredTrips.filter(t => t.status === 'Draft').length;
-  
+
   // Drivers On Duty = count where status is 'On Trip' or 'Available'
   const driversOnDutyCount = filteredDrivers.filter(d => d.status === 'On Trip' || d.status === 'Available').length;
-  
+
   // Fleet Utilization % = (vehicles with status 'On Trip' / total non-Retired vehicles) * 100
   const totalNonRetiredVehicles = filteredVehicles.filter(v => v.status !== 'Retired').length;
   const vehiclesOnTripCount = filteredVehicles.filter(v => v.status === 'On Trip').length;
-  const fleetUtilization = totalNonRetiredVehicles > 0 
-    ? Math.round((vehiclesOnTripCount / totalNonRetiredVehicles) * 100) 
+  const fleetUtilization = totalNonRetiredVehicles > 0
+    ? Math.round((vehiclesOnTripCount / totalNonRetiredVehicles) * 100)
     : 0;
 
   // Recent Trips (last 5-6 trips, sorted by most recent)
@@ -342,26 +342,26 @@ export default function Dashboard() {
       {/* Title Block */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 tracking-tight">Operational Dashboard</h2>
-          <p className="text-sm text-gray-500 mt-1">Real-time status monitor and operations console.</p>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-slate-100 tracking-tight">Operational Dashboard</h2>
+          <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">Real-time status monitor and operations console.</p>
         </div>
       </div>
 
       {/* Filter Row */}
-      <div className="flex flex-col md:flex-row items-stretch md:items-center gap-4 bg-gray-50 border border-gray-200 p-4 rounded-2xl">
-        <div className="flex items-center gap-2 text-sm text-gray-600 font-semibold whitespace-nowrap pl-1">
+      <div className="flex flex-col md:flex-row items-stretch md:items-center gap-4 bg-gray-50 dark:bg-slate-800/40 border border-gray-200 dark:border-slate-800 p-4 rounded-2xl">
+        <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-slate-300 font-semibold whitespace-nowrap pl-1">
           <Filter className="h-4.5 w-4.5 text-amber-500" />
           <span>Filters:</span>
         </div>
-        
+
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 w-full">
           {/* Vehicle Type Dropdown */}
           <div className="flex flex-col gap-1">
-            <label className="text-[10px] uppercase font-bold text-gray-400 font-mono tracking-wider pl-1">Vehicle Type</label>
+            <label className="text-[10px] uppercase font-bold text-gray-400 dark:text-slate-500 font-mono tracking-wider pl-1">Vehicle Type</label>
             <select
               value={filterType}
               onChange={(e) => setFilterType(e.target.value)}
-              className="rounded-xl border border-gray-200 bg-white py-2 px-3 text-sm text-gray-800 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 transition-all font-sans cursor-pointer"
+              className="rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-850 py-2 px-3 text-sm text-gray-800 dark:text-slate-200 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 transition-all font-sans cursor-pointer"
             >
               <option value="All">All Types</option>
               <option value="Van">Van</option>
@@ -372,11 +372,11 @@ export default function Dashboard() {
 
           {/* Status Dropdown */}
           <div className="flex flex-col gap-1">
-            <label className="text-[10px] uppercase font-bold text-gray-400 font-mono tracking-wider pl-1">Vehicle Status</label>
+            <label className="text-[10px] uppercase font-bold text-gray-400 dark:text-slate-500 font-mono tracking-wider pl-1">Vehicle Status</label>
             <select
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
-              className="rounded-xl border border-gray-200 bg-white py-2 px-3 text-sm text-gray-800 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 transition-all font-sans cursor-pointer"
+              className="rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-850 py-2 px-3 text-sm text-gray-800 dark:text-slate-200 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 transition-all font-sans cursor-pointer"
             >
               <option value="All">All Statuses</option>
               <option value="Available">Available</option>
@@ -388,13 +388,13 @@ export default function Dashboard() {
 
           {/* Region Dropdown */}
           <div className="flex flex-col gap-1">
-            <label className="text-[10px] uppercase font-bold text-gray-400 font-mono tracking-wider pl-1 flex items-center gap-1">
+            <label className="text-[10px] uppercase font-bold text-gray-400 dark:text-slate-500 font-mono tracking-wider pl-1 flex items-center gap-1">
               <MapPin className="h-3 w-3 text-amber-500" /> Region / Hub
             </label>
             <select
               value={filterRegion}
               onChange={(e) => setFilterRegion(e.target.value)}
-              className="rounded-xl border border-gray-200 bg-white py-2 px-3 text-sm text-gray-800 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 transition-all font-sans cursor-pointer"
+              className="rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-850 py-2 px-3 text-sm text-gray-800 dark:text-slate-200 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 transition-all font-sans cursor-pointer"
             >
               <option value="All">All Regions</option>
               {LOCATIONS.map(loc => (
@@ -416,14 +416,14 @@ export default function Dashboard() {
           { label: 'Drivers On Duty', value: driversOnDutyCount, borderColor: 'border-t-teal-500' },
           { label: 'Fleet Utilization', value: `${fleetUtilization}%`, borderColor: 'border-t-rose-500' },
         ].map((card, idx) => (
-          <div 
-            key={idx} 
-            className={`bg-white border border-gray-200 rounded-2xl p-4 shadow-sm hover:shadow-md transition-all duration-200 border-t-4 ${card.borderColor} flex flex-col justify-between`}
+          <div
+            key={idx}
+            className={`bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl p-4 shadow-sm hover:shadow-md transition-all duration-200 border-t-4 ${card.borderColor} flex flex-col justify-between`}
           >
-            <div className="text-3xl font-bold text-gray-900 font-mono tracking-tight">
+            <div className="text-3xl font-bold text-gray-900 dark:text-slate-100 font-mono tracking-tight">
               {card.value}
             </div>
-            <div className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mt-2 leading-tight">
+            <div className="text-[10px] font-bold text-gray-400 dark:text-slate-500 uppercase tracking-wider mt-2 leading-tight">
               {card.label}
             </div>
           </div>
@@ -433,48 +433,48 @@ export default function Dashboard() {
       {/* Two Column Lower Section */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left Column: Recent Trips Table */}
-        <div className="lg:col-span-2 bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden flex flex-col">
-          <div className="p-5 border-b border-gray-100 flex items-center justify-between">
-            <h3 className="font-bold text-gray-900 flex items-center gap-2">
+        <div className="lg:col-span-2 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl shadow-sm overflow-hidden flex flex-col">
+          <div className="p-5 border-b border-gray-100 dark:border-slate-800 flex items-center justify-between">
+            <h3 className="font-bold text-gray-900 dark:text-slate-100 flex items-center gap-2">
               <Send className="h-5 w-5 text-amber-500" />
               <span>Recent Trips</span>
             </h3>
-            <span className="text-[10px] font-semibold bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full font-mono">
+            <span className="text-[10px] font-semibold bg-gray-100 dark:bg-slate-800 text-gray-500 dark:text-slate-400 px-2 py-0.5 rounded-full font-mono">
               Live data
             </span>
           </div>
 
           <div className="flex-1 overflow-x-auto">
             {recentTrips.length === 0 ? (
-              <div className="p-12 text-center text-gray-400 text-sm font-mono">
+              <div className="p-12 text-center text-gray-400 dark:text-slate-500 text-sm font-mono">
                 No recent trips matching filters.
               </div>
             ) : (
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="bg-gray-50 border-b border-gray-100">
-                    <th className="px-5 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider font-mono">Trip / Route</th>
-                    <th className="px-5 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider font-mono">Vehicle</th>
-                    <th className="px-5 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider font-mono">Driver</th>
-                    <th className="px-5 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider font-mono">Status</th>
-                    <th className="px-5 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider font-mono">ETA</th>
+                  <tr className="bg-gray-50 dark:bg-slate-800/40 border-b border-gray-100 dark:border-slate-800">
+                    <th className="px-5 py-3 text-[10px] font-bold text-gray-400 dark:text-slate-500 uppercase tracking-wider font-mono">Trip / Route</th>
+                    <th className="px-5 py-3 text-[10px] font-bold text-gray-400 dark:text-slate-500 uppercase tracking-wider font-mono">Vehicle</th>
+                    <th className="px-5 py-3 text-[10px] font-bold text-gray-400 dark:text-slate-500 uppercase tracking-wider font-mono">Driver</th>
+                    <th className="px-5 py-3 text-[10px] font-bold text-gray-400 dark:text-slate-500 uppercase tracking-wider font-mono">Status</th>
+                    <th className="px-5 py-3 text-[10px] font-bold text-gray-400 dark:text-slate-500 uppercase tracking-wider font-mono">ETA</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-100 text-xs">
+                <tbody className="divide-y divide-gray-100 dark:divide-slate-800 text-xs">
                   {recentTrips.map(trip => {
-                    const vehicle = vehicles.find(v => v.regNo === trip.vehicleId);
-                    const driver = drivers.find(d => (d.id || d.uid) === trip.driverId);
-                    
-                    let statusColor = 'bg-slate-100 text-slate-700';
-                    if (trip.status === 'Dispatched') statusColor = 'bg-blue-50 text-blue-700 font-semibold';
-                    if (trip.status === 'Completed') statusColor = 'bg-emerald-50 text-emerald-700 font-semibold';
-                    if (trip.status === 'Cancelled') statusColor = 'bg-rose-50 text-rose-700 font-semibold';
+                     const vehicle = vehicles.find(v => v.regNo === trip.vehicleId);
+                     const driver = drivers.find(d => (d.id || d.uid) === trip.driverId);
 
-                    return (
-                      <tr key={trip.id} className="hover:bg-gray-50/50 transition-colors">
+                     let statusColor = 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300';
+                     if (trip.status === 'Dispatched') statusColor = 'bg-blue-50 dark:bg-blue-950/20 text-blue-700 dark:text-blue-400 font-semibold border border-blue-200/30';
+                     if (trip.status === 'Completed') statusColor = 'bg-emerald-50 dark:bg-emerald-950/20 text-emerald-700 dark:text-emerald-400 font-semibold border border-emerald-200/30';
+                     if (trip.status === 'Cancelled') statusColor = 'bg-rose-50 dark:bg-rose-950/20 text-rose-700 dark:text-rose-400 font-semibold border border-rose-200/30';
+
+                     return (
+                      <tr key={trip.id} className="hover:bg-gray-50/50 dark:hover:bg-slate-800/30 transition-colors">
                         <td className="px-5 py-3.5">
-                          <div className="font-semibold text-gray-900 font-mono">{trip.id}</div>
-                          <div className="text-[10px] text-gray-500 flex items-center gap-1 mt-0.5">
+                          <div className="font-semibold text-gray-900 dark:text-slate-100 font-mono">{trip.id}</div>
+                          <div className="text-[10px] text-gray-500 dark:text-slate-400 flex items-center gap-1 mt-0.5">
                             <span>{trip.source}</span>
                             <span className="text-gray-400">→</span>
                             <span>{trip.destination}</span>
@@ -483,21 +483,21 @@ export default function Dashboard() {
                         <td className="px-5 py-3.5">
                           {vehicle ? (
                             <div>
-                              <div className="font-medium text-gray-800">{vehicle.name}</div>
-                              <div className="text-[10px] text-gray-400 font-mono mt-0.5">{vehicle.regNo}</div>
+                              <div className="font-medium text-gray-800 dark:text-slate-200">{vehicle.name}</div>
+                              <div className="text-[10px] text-gray-400 dark:text-slate-500 font-mono mt-0.5">{vehicle.regNo}</div>
                             </div>
                           ) : (
-                            <span className="text-gray-400 font-mono">—</span>
+                            <span className="text-gray-400 dark:text-slate-500 font-mono">—</span>
                           )}
                         </td>
                         <td className="px-5 py-3.5">
                           {driver ? (
                             <div>
-                              <div className="font-medium text-gray-800">{driver.name}</div>
-                              <div className="text-[10px] text-gray-400 font-mono mt-0.5">{driver.licenseCategory}</div>
+                              <div className="font-medium text-gray-800 dark:text-slate-200">{driver.name}</div>
+                              <div className="text-[10px] text-gray-400 dark:text-slate-500 font-mono mt-0.5">{driver.licenseCategory}</div>
                             </div>
                           ) : (
-                            <span className="text-gray-400 font-mono">—</span>
+                            <span className="text-gray-400 dark:text-slate-500 font-mono">—</span>
                           )}
                         </td>
                         <td className="px-5 py-3.5">
@@ -505,7 +505,7 @@ export default function Dashboard() {
                             {trip.status}
                           </span>
                         </td>
-                        <td className="px-5 py-3.5">
+                        <td className="px-5 py-3.5 text-gray-800 dark:text-slate-200">
                           {renderETA(trip, vehicle, driver)}
                         </td>
                       </tr>
@@ -518,13 +518,13 @@ export default function Dashboard() {
         </div>
 
         {/* Right Column: Vehicle Status horizontal bar breakdown */}
-        <div className="bg-white border border-gray-200 rounded-2xl shadow-sm p-5 flex flex-col justify-between">
+        <div className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl shadow-sm p-5 flex flex-col justify-between">
           <div>
-            <h3 className="font-bold text-gray-900 flex items-center gap-2 mb-1">
+            <h3 className="font-bold text-gray-900 dark:text-slate-100 flex items-center gap-2 mb-1">
               <Truck className="h-5 w-5 text-amber-500" />
               <span>Vehicle Status Breakdown</span>
             </h3>
-            <p className="text-[11px] text-gray-400">Proportional status of current filtered fleet.</p>
+            <p className="text-[11px] text-gray-400 dark:text-slate-500">Proportional status of current filtered fleet.</p>
           </div>
 
           <div className="space-y-4 my-6">
@@ -533,11 +533,11 @@ export default function Dashboard() {
               return (
                 <div key={st.name} className="space-y-1.5">
                   <div className="flex justify-between items-center text-xs">
-                    <span className="font-semibold text-gray-700">{st.name}</span>
-                    <span className="font-mono text-gray-500 font-semibold">{st.count} ({pct}%)</span>
+                    <span className="font-semibold text-gray-700 dark:text-slate-300">{st.name}</span>
+                    <span className="font-mono text-gray-500 dark:text-slate-400 font-semibold">{st.count} ({pct}%)</span>
                   </div>
-                  <div className="w-full bg-gray-100 rounded-full h-2.5 overflow-hidden">
-                    <div 
+                  <div className="w-full bg-gray-100 dark:bg-slate-800 rounded-full h-2.5 overflow-hidden">
+                    <div
                       className={`h-full ${st.color} rounded-full transition-all duration-500 ease-out`}
                       style={{ width: `${pct}%` }}
                     />
@@ -547,9 +547,9 @@ export default function Dashboard() {
             })}
           </div>
 
-          <div className="pt-4 border-t border-gray-100 flex items-center justify-between text-[11px] text-gray-400 font-mono">
+          <div className="pt-4 border-t border-gray-100 dark:border-slate-800 flex items-center justify-between text-[11px] text-gray-400 font-mono">
             <span>Total Active Fleet:</span>
-            <span className="font-bold text-gray-700">{totalFilteredVehicles} vehicles</span>
+            <span className="font-bold text-gray-700 dark:text-slate-300">{totalFilteredVehicles} vehicles</span>
           </div>
         </div>
       </div>

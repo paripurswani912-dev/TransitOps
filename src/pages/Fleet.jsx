@@ -1,22 +1,22 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { db } from '../firebase';
-import { 
-  collection, 
-  doc, 
-  onSnapshot, 
-  getDoc, 
-  setDoc, 
-  updateDoc 
+import {
+  collection,
+  doc,
+  onSnapshot,
+  getDoc,
+  setDoc,
+  updateDoc
 } from 'firebase/firestore';
 import { RBAC_MATRIX } from '../constants/rbac';
-import { 
-  Plus, 
-  Search, 
-  X, 
-  Loader2, 
-  AlertCircle, 
-  Truck 
+import {
+  Plus,
+  Search,
+  X,
+  Loader2,
+  AlertCircle,
+  Truck
 } from 'lucide-react';
 
 // Default mock vehicles if none exist in localStorage
@@ -104,7 +104,7 @@ export default function Fleet() {
       // Real Firebase Firestore Mode
       setLoading(true);
       const vehiclesCol = collection(db, 'vehicles');
-      
+
       const unsubscribe = onSnapshot(vehiclesCol, (snapshot) => {
         const list = [];
         snapshot.forEach((doc) => {
@@ -160,7 +160,7 @@ export default function Fleet() {
   const handleSave = async (e) => {
     e.preventDefault();
     setValidationError('');
-    
+
     // Normalize Registration Number
     const cleanRegNo = regNo.trim().toUpperCase();
     if (!cleanRegNo) {
@@ -312,10 +312,10 @@ export default function Fleet() {
       {/* Title Header Section */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 tracking-tight font-sans">Vehicle Registry</h2>
-          <p className="text-sm text-gray-500 mt-1">Configure active fleet parameters, load weight caps, and lifecycle statuses.</p>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-slate-100 tracking-tight font-sans">Vehicle Registry</h2>
+          <p className="text-sm text-gray-500 dark:text-slate-400 mt-1">Configure active fleet parameters, load weight caps, and lifecycle statuses.</p>
         </div>
-        
+
         {/* Amber Add Vehicle Button (Magnetic Hover) */}
         {!isReadOnly && (
           <button
@@ -333,17 +333,17 @@ export default function Fleet() {
 
       {/* Database Error Alert */}
       {error && (
-        <div className="rounded-2xl border border-red-200 bg-red-50/50 p-4 text-sm text-red-800 flex items-start gap-3">
+        <div className="rounded-2xl border border-red-200 dark:border-red-900/30 bg-red-50/50 dark:bg-red-950/20 text-sm text-red-800 dark:text-red-400 flex items-start gap-3">
           <AlertCircle className="h-5 w-5 text-red-600 shrink-0 mt-0.5" />
           <div>
             <p className="font-bold">System Connection Issue</p>
-            <p className="text-xs text-red-600 mt-1">{error}</p>
+            <p className="text-xs text-red-600 dark:text-red-400 mt-1">{error}</p>
           </div>
         </div>
       )}
 
       {/* Filter Row */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-gray-50/60 p-4 rounded-2xl border border-gray-150">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-gray-50/60 dark:bg-slate-800/40 p-4 rounded-2xl border border-gray-150 dark:border-slate-800">
         {/* Search input */}
         <div className="relative">
           <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
@@ -354,17 +354,17 @@ export default function Fleet() {
             placeholder="Search by Reg. No..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full rounded-xl border border-gray-200 bg-white py-2 pl-10 pr-4 text-sm text-gray-900 placeholder-gray-400 outline-none transition-all focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 font-sans"
+            className="w-full rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-850 py-2 pl-10 pr-4 text-sm text-gray-900 dark:text-slate-100 placeholder-gray-400 dark:placeholder-gray-500 outline-none transition-all focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 font-sans"
           />
         </div>
 
         {/* Type Filter */}
         <div className="flex items-center space-x-2">
-          <span className="text-xs font-semibold text-gray-500 font-mono uppercase tracking-wider">Type:</span>
+          <span className="text-xs font-semibold text-gray-500 dark:text-slate-400 font-mono uppercase tracking-wider">Type:</span>
           <select
             value={filterType}
             onChange={(e) => setFilterType(e.target.value)}
-            className="flex-1 rounded-xl border border-gray-200 bg-white py-2 px-3 text-sm text-gray-900 outline-none transition-all focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10"
+            className="flex-1 rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-850 py-2 px-3 text-sm text-gray-900 dark:text-slate-200 outline-none transition-all focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10"
           >
             <option value="All">All Types</option>
             <option value="Van">Van</option>
@@ -376,11 +376,11 @@ export default function Fleet() {
 
         {/* Status Filter */}
         <div className="flex items-center space-x-2">
-          <span className="text-xs font-semibold text-gray-500 font-mono uppercase tracking-wider">Status:</span>
+          <span className="text-xs font-semibold text-gray-500 dark:text-slate-400 font-mono uppercase tracking-wider">Status:</span>
           <select
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
-            className="flex-1 rounded-xl border border-gray-200 bg-white py-2 px-3 text-sm text-gray-900 outline-none transition-all focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10"
+            className="flex-1 rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-850 py-2 px-3 text-sm text-gray-900 dark:text-slate-200 outline-none transition-all focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10"
           >
             <option value="All">All Statuses</option>
             <option value="Available">Available</option>
@@ -393,20 +393,20 @@ export default function Fleet() {
 
       {/* Main Content Area */}
       {loading ? (
-        <div className="flex flex-col items-center justify-center py-20 bg-white rounded-2xl border border-gray-200 shadow-sm">
+        <div className="flex flex-col items-center justify-center py-20 bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-sm">
           <Loader2 className="h-10 w-10 animate-spin text-amber-500 mb-3" />
-          <p className="text-sm font-semibold tracking-wider text-gray-400 font-mono uppercase">Querying Vehicle Registries...</p>
+          <p className="text-sm font-semibold tracking-wider text-gray-400 dark:text-slate-500 font-mono uppercase">Querying Vehicle Registries...</p>
         </div>
       ) : filteredVehicles.length === 0 ? (
         /* Empty State */
-        <div className="flex flex-col items-center justify-center py-16 bg-white rounded-2xl border border-gray-200 shadow-sm text-center px-4">
-          <div className="h-14 w-14 rounded-full bg-amber-50 flex items-center justify-center text-amber-500 mb-4 animate-pulse">
+        <div className="flex flex-col items-center justify-center py-16 bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-sm text-center px-4">
+          <div className="h-14 w-14 rounded-full bg-amber-50 dark:bg-amber-500/10 flex items-center justify-center text-amber-500 mb-4 animate-pulse">
             <Truck className="h-7 w-7" />
           </div>
-          <h3 className="text-lg font-bold text-gray-900 mb-1 font-sans">No vehicles registered yet</h3>
-          <p className="text-sm text-gray-500 max-w-sm mb-6">
-            {searchTerm || filterType !== 'All' || filterStatus !== 'All' 
-              ? 'No registered vehicles match your current search and filter parameters.' 
+          <h3 className="text-lg font-bold text-gray-900 dark:text-slate-100 mb-1 font-sans">No vehicles registered yet</h3>
+          <p className="text-sm text-gray-500 dark:text-slate-400 max-w-sm mb-6">
+            {searchTerm || filterType !== 'All' || filterStatus !== 'All'
+              ? 'No registered vehicles match your current search and filter parameters.'
               : 'Add your first box truck, cargo van, or mini transport vehicle to get started.'}
           </p>
           {(searchTerm || filterType !== 'All' || filterStatus !== 'All') ? (
@@ -416,7 +416,7 @@ export default function Fleet() {
                 setFilterType('All');
                 setFilterStatus('All');
               }}
-              className="inline-flex items-center gap-1.5 rounded-xl border border-gray-300 px-4 py-2 text-xs font-semibold text-gray-700 bg-white hover:bg-gray-50 transition-colors cursor-pointer"
+              className="inline-flex items-center gap-1.5 rounded-xl border border-gray-300 dark:border-slate-700 px-4 py-2 text-xs font-semibold text-gray-700 dark:text-slate-200 bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-750 transition-colors cursor-pointer"
             >
               Clear Filters
             </button>
@@ -432,66 +432,64 @@ export default function Fleet() {
         </div>
       ) : (
         /* Data Table */
-        <div className="overflow-hidden border border-gray-200 rounded-2xl bg-white shadow-sm transition-all duration-300">
+        <div className="overflow-hidden border border-gray-200 dark:border-slate-800 rounded-2xl bg-white dark:bg-slate-900 shadow-sm transition-all duration-300">
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
+            <table className="min-w-full divide-y divide-gray-200 dark:divide-slate-800">
+              <thead className="bg-gray-50 dark:bg-slate-800/40">
                 <tr>
-                  <th scope="col" className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-500 font-mono">Reg. No</th>
-                  <th scope="col" className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-500 font-mono">Name/Model</th>
-                  <th scope="col" className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-500 font-mono">Type</th>
-                  <th scope="col" className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-500 font-mono">Capacity</th>
-                  <th scope="col" className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-500 font-mono">Odometer</th>
-                  <th scope="col" className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-500 font-mono">Acq. Cost</th>
-                  <th scope="col" className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-500 font-mono">Status</th>
+                  <th scope="col" className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-slate-400 font-mono">Reg. No</th>
+                  <th scope="col" className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-slate-400 font-mono">Name/Model</th>
+                  <th scope="col" className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-slate-400 font-mono">Type</th>
+                  <th scope="col" className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-slate-400 font-mono">Capacity</th>
+                  <th scope="col" className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-slate-400 font-mono">Odometer</th>
+                  <th scope="col" className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-slate-400 font-mono">Acq. Cost</th>
+                  <th scope="col" className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-slate-400 font-mono">Status</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-200 text-sm font-sans">
+              <tbody className="divide-y divide-gray-200 dark:divide-slate-800 text-sm font-sans">
                 {filteredVehicles.map((v) => (
-                  <tr 
-                    key={v.regNo} 
+                  <tr
+                    key={v.regNo}
                     onClick={() => !isReadOnly && handleOpenEditDrawer(v)}
-                    className={`hover:bg-amber-50/10 transition-colors duration-150 ${isReadOnly ? 'cursor-default' : 'cursor-pointer'}`}
+                    className={`hover:bg-amber-50/10 dark:hover:bg-amber-950/15 transition-colors duration-150 ${isReadOnly ? 'cursor-default' : 'cursor-pointer'}`}
                   >
                     {/* Reg No in bold JetBrains Mono */}
-                    <td className="px-6 py-4 font-mono font-bold text-gray-900 whitespace-nowrap">{v.regNo}</td>
-                    
+                    <td className="px-6 py-4 font-mono font-bold text-gray-900 dark:text-slate-100 whitespace-nowrap">{v.regNo}</td>
+
                     {/* Name / Model display */}
-                    <td className="px-6 py-4 text-gray-800 whitespace-nowrap">
+                    <td className="px-6 py-4 text-gray-800 dark:text-slate-200 whitespace-nowrap">
                       <span className="font-semibold block">{v.name}</span>
                       {v.model && v.model !== v.name && (
-                        <span className="text-xs text-gray-400 block font-mono mt-0.5">{v.model}</span>
+                        <span className="text-xs text-gray-400 dark:text-slate-500 block font-mono mt-0.5">{v.model}</span>
                       )}
                     </td>
-                    
+
                     {/* Type */}
-                    <td className="px-6 py-4 text-gray-600 whitespace-nowrap">{v.type}</td>
-                    
+                    <td className="px-6 py-4 text-gray-600 dark:text-slate-300 whitespace-nowrap">{v.type}</td>
+
                     {/* Capacity in JetBrains Mono */}
-                    <td className="px-6 py-4 text-gray-700 whitespace-nowrap font-mono">{v.capacity.toLocaleString()} kg</td>
-                    
+                    <td className="px-6 py-4 text-gray-700 dark:text-slate-300 whitespace-nowrap font-mono">{v.capacity.toLocaleString()} kg</td>
+
                     {/* Odometer in JetBrains Mono */}
-                    <td className="px-6 py-4 text-gray-700 whitespace-nowrap font-mono">{v.odometer.toLocaleString()} km</td>
-                    
+                    <td className="px-6 py-4 text-gray-700 dark:text-slate-300 whitespace-nowrap font-mono">{v.odometer.toLocaleString()} km</td>
+
                     {/* Acquisition Cost in JetBrains Mono */}
-                    <td className="px-6 py-4 text-gray-700 whitespace-nowrap font-mono">
+                    <td className="px-6 py-4 text-gray-700 dark:text-slate-300 whitespace-nowrap font-mono">
                       ${v.acqCost.toLocaleString()}
                     </td>
-                    
+
                     {/* Status Pill Badge */}
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold ${
-                        v.status === 'Available' ? 'bg-emerald-50 text-emerald-800 border border-emerald-200' :
-                        v.status === 'On Trip' ? 'bg-blue-50 text-blue-800 border border-blue-200' :
-                        v.status === 'In Shop' ? 'bg-amber-50 text-amber-800 border border-amber-200' :
-                        'bg-rose-50 text-rose-800 border border-rose-200'
-                      }`}>
-                        <span className={`h-1.5 w-1.5 rounded-full ${
-                          v.status === 'Available' ? 'bg-emerald-500' :
-                          v.status === 'On Trip' ? 'bg-blue-500' :
-                          v.status === 'In Shop' ? 'bg-amber-500' :
-                          'bg-rose-500'
-                        }`}></span>
+                      <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold ${v.status === 'Available' ? 'bg-emerald-50 dark:bg-emerald-950/20 text-emerald-800 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/30' :
+                          v.status === 'On Trip' ? 'bg-blue-50 dark:bg-blue-950/20 text-blue-800 dark:text-blue-400 border border-blue-200 dark:border-blue-800/30' :
+                            v.status === 'In Shop' ? 'bg-amber-50 dark:bg-amber-950/20 text-amber-800 dark:text-amber-400 border border-amber-200 dark:border-amber-800/30' :
+                              'bg-rose-50 dark:bg-rose-950/20 text-rose-800 dark:text-rose-400 border border-rose-200 dark:border-rose-800/30'
+                        }`}>
+                        <span className={`h-1.5 w-1.5 rounded-full ${v.status === 'Available' ? 'bg-emerald-500' :
+                            v.status === 'On Trip' ? 'bg-blue-500' :
+                              v.status === 'In Shop' ? 'bg-amber-500' :
+                                'bg-rose-500'
+                          }`}></span>
                         {v.status}
                       </span>
                     </td>
@@ -504,7 +502,7 @@ export default function Fleet() {
       )}
 
       {/* Red-accented Rule Note below the table */}
-      <div className="flex items-start gap-2.5 rounded-xl bg-red-50/40 border border-red-100 p-3 text-xs text-red-700">
+      <div className="flex items-start gap-2.5 rounded-xl bg-red-50/40 dark:bg-red-950/10 border border-red-100 dark:border-red-900/30 p-3 text-xs text-red-700 dark:text-red-400">
         <span className="inline-flex h-2 w-2 rounded-full bg-red-500 shrink-0 mt-1.5"></span>
         <span>
           <strong className="font-bold">Rule:</strong> Registration No. must be unique · Retired/In Shop vehicles are hidden from Trip Dispatcher
@@ -515,26 +513,26 @@ export default function Fleet() {
       {isDrawerOpen && (
         <div className="fixed inset-0 z-50 flex justify-end overflow-hidden">
           {/* Overlay backdrop */}
-          <div 
+          <div
             onClick={() => setIsDrawerOpen(false)}
             className="absolute inset-0 bg-gray-900/40 backdrop-blur-xs transition-opacity duration-300"
           ></div>
 
           {/* Drawer container */}
-          <div className="relative w-full max-w-md bg-white shadow-2xl flex flex-col h-full z-10 animate-slide-in">
+          <div className="relative w-full max-w-md bg-white dark:bg-slate-900 shadow-2xl flex flex-col h-full z-10 animate-slide-in">
             {/* Header */}
-            <div className="flex items-center justify-between px-6 py-5 border-b border-gray-150">
+            <div className="flex items-center justify-between px-6 py-5 border-b border-gray-150 dark:border-slate-800">
               <div>
-                <h3 className="text-lg font-bold text-gray-900 font-sans">
+                <h3 className="text-lg font-bold text-gray-900 dark:text-slate-100 font-sans">
                   {editingVehicle ? 'Edit Vehicle' : 'Register Vehicle'}
                 </h3>
-                <p className="text-xs text-gray-400 mt-0.5 font-mono">
+                <p className="text-xs text-gray-400 dark:text-slate-500 mt-0.5 font-mono">
                   {editingVehicle ? `ID: ${editingVehicle.regNo}` : 'Create a new fleet record'}
                 </p>
               </div>
-              <button 
+              <button
                 onClick={() => setIsDrawerOpen(false)}
-                className="h-8 w-8 rounded-xl border border-gray-100 flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-gray-50 transition-all cursor-pointer"
+                className="h-8 w-8 rounded-xl border border-gray-100 dark:border-slate-800 flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-slate-800 transition-all cursor-pointer"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -542,7 +540,7 @@ export default function Fleet() {
 
             {/* Error Notification */}
             {validationError && (
-              <div className="mx-6 mt-5 rounded-xl border border-red-200 bg-red-50/60 p-3 text-xs text-red-800 flex items-start gap-2 animate-shake">
+              <div className="mx-6 mt-5 rounded-xl border border-red-200 dark:border-red-900/30 bg-red-50/60 dark:bg-red-950/20 p-3 text-xs text-red-800 dark:text-red-400 flex items-start gap-2 animate-shake">
                 <AlertCircle className="h-4.5 w-4.5 text-red-600 shrink-0 mt-0.5" />
                 <p className="font-bold">{validationError}</p>
               </div>
@@ -552,7 +550,7 @@ export default function Fleet() {
             <form onSubmit={handleSave} className="flex-1 overflow-y-auto px-6 py-5 space-y-4">
               {/* Registration Number */}
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 font-mono mb-1.5">
+                <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-slate-400 font-mono mb-1.5">
                   Registration Number
                 </label>
                 <input
@@ -562,16 +560,16 @@ export default function Fleet() {
                   value={regNo}
                   onChange={(e) => setRegNo(e.target.value)}
                   placeholder="e.g. NY-1234-AB"
-                  className="w-full rounded-xl border border-gray-200 bg-white py-2.5 px-3 text-sm text-gray-900 placeholder-gray-400 outline-none transition-all focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 font-mono disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed uppercase"
+                  className="w-full rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-850 py-2.5 px-3 text-sm text-gray-900 dark:text-slate-100 placeholder-gray-400 dark:placeholder-gray-500 outline-none transition-all focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 font-mono disabled:bg-gray-100 dark:disabled:bg-slate-800 disabled:text-gray-400 dark:disabled:text-slate-500 disabled:cursor-not-allowed uppercase"
                 />
                 {!editingVehicle && (
-                  <p className="text-[10px] text-gray-400 mt-1">Must be unique. Format: [State]-[Numbers]-[Letters].</p>
+                  <p className="text-[10px] text-gray-400 dark:text-slate-500 mt-1">Must be unique. Format: [State]-[Numbers]-[Letters].</p>
                 )}
               </div>
 
               {/* Name/Model */}
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 font-mono mb-1.5">
+                <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-slate-400 font-mono mb-1.5">
                   Name / Model
                 </label>
                 <input
@@ -580,19 +578,19 @@ export default function Fleet() {
                   value={nameModel}
                   onChange={(e) => setNameModel(e.target.value)}
                   placeholder="e.g. Titan Hauler 1"
-                  className="w-full rounded-xl border border-gray-200 bg-white py-2.5 px-3 text-sm text-gray-900 placeholder-gray-400 outline-none transition-all focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10"
+                  className="w-full rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-850 py-2.5 px-3 text-sm text-gray-900 dark:text-slate-100 placeholder-gray-400 dark:placeholder-gray-500 outline-none transition-all focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10"
                 />
               </div>
 
               {/* Type dropdown */}
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 font-mono mb-1.5">
+                <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-slate-400 font-mono mb-1.5">
                   Vehicle Type
                 </label>
                 <select
                   value={type}
                   onChange={(e) => setType(e.target.value)}
-                  className="w-full rounded-xl border border-gray-200 bg-white py-2.5 px-3 text-sm text-gray-900 outline-none transition-all focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10"
+                  className="w-full rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-850 py-2.5 px-3 text-sm text-gray-900 dark:text-slate-200 outline-none transition-all focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10"
                 >
                   <option value="Van">Van</option>
                   <option value="Truck">Truck</option>
@@ -603,7 +601,7 @@ export default function Fleet() {
 
               {/* Max Load Capacity */}
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 font-mono mb-1.5">
+                <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-slate-400 font-mono mb-1.5">
                   Max Load Capacity (kg)
                 </label>
                 <input
@@ -612,13 +610,13 @@ export default function Fleet() {
                   value={capacity}
                   onChange={(e) => setCapacity(e.target.value)}
                   placeholder="e.g. 36000"
-                  className="w-full rounded-xl border border-gray-200 bg-white py-2.5 px-3 text-sm text-gray-900 placeholder-gray-400 outline-none transition-all focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 font-mono"
+                  className="w-full rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-850 py-2.5 px-3 text-sm text-gray-900 dark:text-slate-100 placeholder-gray-400 dark:placeholder-gray-500 outline-none transition-all focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 font-mono"
                 />
               </div>
 
               {/* Odometer */}
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 font-mono mb-1.5">
+                <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-slate-400 font-mono mb-1.5">
                   Odometer (km)
                 </label>
                 <input
@@ -627,13 +625,13 @@ export default function Fleet() {
                   value={odometer}
                   onChange={(e) => setOdometer(e.target.value)}
                   placeholder="e.g. 142500"
-                  className="w-full rounded-xl border border-gray-200 bg-white py-2.5 px-3 text-sm text-gray-900 placeholder-gray-400 outline-none transition-all focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 font-mono"
+                  className="w-full rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-850 py-2.5 px-3 text-sm text-gray-900 dark:text-slate-100 placeholder-gray-400 dark:placeholder-gray-500 outline-none transition-all focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 font-mono"
                 />
               </div>
 
               {/* Acquisition Cost */}
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 font-mono mb-1.5">
+                <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-slate-400 font-mono mb-1.5">
                   Acquisition Cost ($)
                 </label>
                 <input
@@ -642,19 +640,19 @@ export default function Fleet() {
                   value={acqCost}
                   onChange={(e) => setAcqCost(e.target.value)}
                   placeholder="e.g. 125000"
-                  className="w-full rounded-xl border border-gray-200 bg-white py-2.5 px-3 text-sm text-gray-900 placeholder-gray-400 outline-none transition-all focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 font-mono"
+                  className="w-full rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-850 py-2.5 px-3 text-sm text-gray-900 dark:text-slate-100 placeholder-gray-400 dark:placeholder-gray-500 outline-none transition-all focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 font-mono"
                 />
               </div>
 
               {/* Status */}
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 font-mono mb-1.5">
+                <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-slate-400 font-mono mb-1.5">
                   Operational Status
                 </label>
                 <select
                   value={status}
                   onChange={(e) => setStatus(e.target.value)}
-                  className="w-full rounded-xl border border-gray-200 bg-white py-2.5 px-3 text-sm text-gray-900 outline-none transition-all focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10"
+                  className="w-full rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-850 py-2.5 px-3 text-sm text-gray-900 dark:text-slate-200 outline-none transition-all focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10"
                 >
                   <option value="Available">Available</option>
                   <option value="On Trip">On Trip</option>
@@ -665,19 +663,19 @@ export default function Fleet() {
             </form>
 
             {/* Footer Actions */}
-            <div className="px-6 py-4 border-t border-gray-150 bg-gray-50 flex items-center justify-between gap-3">
+            <div className="px-6 py-4 border-t border-gray-150 dark:border-slate-800 bg-gray-50 dark:bg-slate-900 flex items-center justify-between gap-3">
               <button
                 type="button"
                 onClick={() => setIsDrawerOpen(false)}
-                className="flex-1 rounded-xl border border-gray-300 bg-white py-3 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer"
+                className="flex-1 rounded-xl border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 py-3 text-sm font-semibold text-gray-700 dark:text-slate-350 hover:bg-gray-50 dark:hover:bg-slate-750 transition-colors cursor-pointer"
               >
                 Cancel
               </button>
-              
+
               <button
                 onClick={handleSave}
                 disabled={isSaving}
-                className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-amber-500 py-3 text-sm font-bold text-gray-900 border border-transparent shadow-sm hover:bg-amber-600 transition-colors disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed cursor-pointer"
+                className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-amber-500 py-3 text-sm font-bold text-gray-900 border border-transparent shadow-sm hover:bg-amber-600 transition-colors disabled:bg-gray-100 dark:disabled:bg-slate-800 disabled:text-gray-400 dark:disabled:text-slate-500 disabled:cursor-not-allowed cursor-pointer"
               >
                 {isSaving ? (
                   <>

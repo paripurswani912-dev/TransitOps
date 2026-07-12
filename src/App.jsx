@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
+import { ThemeProvider } from './context/ThemeContext';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { DashboardLayout } from './components/DashboardLayout';
 
@@ -17,8 +18,9 @@ import Settings from './pages/Settings';
 
 export default function App() {
   return (
-    <AuthProvider>
-      <BrowserRouter basename="/TransitOps">
+    <ThemeProvider>
+      <AuthProvider>
+        <BrowserRouter basename="/TransitOps">
         <Routes>
           {/* Public Authentication Route */}
           <Route path="/login" element={<Login />} />
@@ -107,11 +109,12 @@ export default function App() {
 
           {/* Redirect root to dashboard */}
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
-          
+
           {/* Fallback for all other undefined routes */}
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
+  </ThemeProvider>
   );
 }

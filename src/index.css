@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --font-sans: "Inter", system-ui, -apple-system, sans-serif;
   --font-mono: "JetBrains Mono", monospace;
@@ -9,15 +11,24 @@
 
 /* Custom Base Styles */
 @layer base {
-  html, body, #root {
-    @apply h-full w-full m-0 p-0 font-sans bg-[#F9FAFB] text-[#1F2937];
+
+  html,
+  body,
+  #root {
+    @apply h-full w-full m-0 p-0 font-sans bg-[#F9FAFB] text-[#1F2937] dark:bg-slate-900 dark:text-slate-100;
   }
-  
-  h1, h2, h3, h4, h5, h6 {
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-sans font-semibold tracking-tight;
   }
 
-  code, .mono-data {
+  code,
+  .mono-data {
     @apply font-mono;
   }
 }
@@ -26,6 +37,7 @@
 .btn-magnetic {
   @apply transition-all duration-300 ease-out;
 }
+
 .btn-magnetic:hover {
   transform: scale(1.03);
 }

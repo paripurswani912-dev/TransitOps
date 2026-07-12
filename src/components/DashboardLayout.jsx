@@ -1,18 +1,21 @@
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { 
-  LayoutDashboard, 
-  Truck, 
-  Users, 
-  Send, 
-  Wrench, 
-  Fuel, 
-  BarChart3, 
-  Settings, 
-  LogOut, 
+import { useTheme } from '../context/ThemeContext';
+import {
+  LayoutDashboard,
+  Truck,
+  Users,
+  Send,
+  Wrench,
+  Fuel,
+  BarChart3,
+  Settings,
+  LogOut,
   ShieldAlert,
-  Search
+  Search,
+  Sun,
+  Moon
 } from 'lucide-react';
 
 import { RBAC_MATRIX } from '../constants/rbac';
@@ -36,6 +39,7 @@ const getInitials = (name) => {
 
 export const DashboardLayout = ({ children }) => {
   const { user, role, logOut } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -72,9 +76,9 @@ export const DashboardLayout = ({ children }) => {
   const isCurrentPathAllowed = hasAccess(location.pathname);
 
   return (
-    <div className="flex h-screen w-screen overflow-hidden bg-[#F3F4F6]">
+    <div className="flex h-screen w-screen overflow-hidden bg-[#F3F4F6] dark:bg-slate-950">
       {/* Sidebar */}
-      <aside className="flex w-64 flex-col border-r border-gray-200 bg-[#1F2937] text-white">
+      <aside className="flex w-64 flex-col border-r border-gray-200 dark:border-slate-800 bg-[#1F2937] text-white">
         {/* Brand */}
         <div className="flex h-16 items-center px-6 border-b border-gray-800">
           <span className="text-xl font-bold tracking-tight text-white flex items-center gap-2">
@@ -113,18 +117,16 @@ export const DashboardLayout = ({ children }) => {
                     e.preventDefault();
                   }
                 }}
-                className={`group flex items-center px-3 py-2 text-sm font-medium rounded-xl transition-all duration-150 ${
-                  active
+                className={`group flex items-center px-3 py-2 text-sm font-medium rounded-xl transition-all duration-150 ${active
                     ? 'bg-amber-500 text-gray-900'
                     : allowed
-                    ? 'text-gray-300 hover:bg-gray-800 hover:text-white'
-                    : 'text-gray-600 cursor-not-allowed opacity-40'
-                }`}
+                      ? 'text-gray-300 hover:bg-gray-800 hover:text-white'
+                      : 'text-gray-600 cursor-not-allowed opacity-40'
+                  }`}
                 title={!allowed ? `Restricted to ${ROLE_NAMES[role]}` : ''}
               >
-                <Icon className={`mr-3 h-5 w-5 shrink-0 ${
-                  active ? 'text-gray-900' : allowed ? 'text-gray-400 group-hover:text-white' : 'text-gray-700'
-                }`} />
+                <Icon className={`mr-3 h-5 w-5 shrink-0 ${active ? 'text-gray-900' : allowed ? 'text-gray-400 group-hover:text-white' : 'text-gray-700'
+                  }`} />
                 <span className="flex-1">{item.name}</span>
                 {!allowed && (
                   <span className="text-[9px] font-mono bg-gray-800 text-gray-400 px-1.5 py-0.5 rounded">
@@ -152,7 +154,7 @@ export const DashboardLayout = ({ children }) => {
       {/* Main Content Area */}
       <div className="flex flex-1 flex-col overflow-hidden">
         {/* Top Header */}
-        <header className="flex h-16 items-center justify-between border-b border-gray-200 bg-white px-8">
+        <header className="flex h-16 items-center justify-between border-b border-gray-200 bg-white px-8 dark:bg-slate-900 dark:border-slate-800">
           {/* Search input (left) */}
           <div className="flex items-center flex-1 max-w-xs md:max-w-md">
             <div className="relative w-full">
@@ -162,25 +164,34 @@ export const DashboardLayout = ({ children }) => {
               <input
                 type="text"
                 placeholder="Search resources, vehicles..."
-                className="w-full rounded-2xl border border-gray-200 bg-gray-50/50 py-2 pl-10 pr-4 text-sm text-gray-900 placeholder-gray-400 outline-none transition-all focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 font-sans"
+                className="w-full rounded-2xl border border-gray-200 bg-gray-50/50 py-2 pl-10 pr-4 text-sm text-gray-900 dark:text-slate-100 placeholder-gray-400 dark:placeholder-gray-500 bg-white dark:bg-slate-800 outline-none transition-all focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 font-sans"
               />
             </div>
           </div>
 
           {/* User Profile Info (right) */}
           <div className="flex items-center space-x-3.5">
+            {/* Theme Toggle Button */}
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-xl border border-gray-200 hover:bg-gray-50 text-gray-500 hover:text-gray-700 transition-all dark:border-slate-800 dark:hover:bg-slate-800 dark:text-slate-400 dark:hover:text-slate-200 cursor-pointer flex items-center justify-center active:scale-95 duration-150"
+              title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+            >
+              {theme === 'dark' ? <Sun className="h-4.5 w-4.5 text-amber-500" /> : <Moon className="h-4.5 w-4.5 text-slate-500" />}
+            </button>
+
             <div className="flex flex-col items-end text-right">
-              <div className="text-sm font-semibold text-gray-800 flex items-center gap-1.5">
+              <div className="text-sm font-semibold text-gray-800 dark:text-slate-200 flex items-center gap-1.5">
                 <span>{user?.name || 'Raven K.'}</span>
                 <span className="rounded bg-amber-500/10 px-2 py-0.5 text-[10px] font-bold text-amber-600 font-mono tracking-wider">
                   {role ? ROLE_NAMES[role] || role : 'Dispatcher'}
                 </span>
               </div>
               {user?.email && (
-                <div className="text-[10px] text-gray-400 font-mono">{user.email}</div>
+                <div className="text-[10px] text-gray-400 dark:text-slate-400 font-mono">{user.email}</div>
               )}
             </div>
-            
+
             {/* Avatar Circle */}
             <div className="h-9 w-9 rounded-full bg-amber-500 text-gray-950 flex items-center justify-center font-bold text-sm tracking-tighter">
               {getInitials(user?.name || user?.email || 'Raven K.')}
@@ -191,19 +202,19 @@ export const DashboardLayout = ({ children }) => {
         {/* Page Content */}
         <main className="flex-1 overflow-y-auto p-8">
           {isCurrentPathAllowed ? (
-            <div className="h-full bg-white rounded-2xl border border-gray-200 shadow-sm p-6 overflow-y-auto">
+            <div className="h-full bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-sm p-6 overflow-y-auto">
               {children}
             </div>
           ) : (
-            <div className="flex h-full flex-col items-center justify-center bg-white rounded-2xl border border-gray-200 shadow-sm p-8 text-center">
-              <div className="rounded-full bg-red-50 p-4 text-red-600 mb-4">
+            <div className="flex h-full flex-col items-center justify-center bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-800 shadow-sm p-8 text-center">
+              <div className="rounded-full bg-red-50 dark:bg-red-950/20 p-4 text-red-600 dark:text-red-400 mb-4">
                 <ShieldAlert className="h-12 w-12" />
               </div>
-              <h2 className="text-xl font-bold text-gray-900 mb-2">Access Denied</h2>
-              <p className="text-gray-500 max-w-md mb-6">
-                Your role <strong className="text-gray-800 font-mono">[{role}]</strong> does not have permission to view the <strong className="text-gray-800">{navItems.find((n) => n.path === location.pathname)?.name}</strong> workspace.
+              <h2 className="text-xl font-bold text-gray-900 dark:text-slate-100 mb-2">Access Denied</h2>
+              <p className="text-gray-500 dark:text-slate-400 max-w-md mb-6">
+                Your role <strong className="text-gray-800 dark:text-slate-200 font-mono">[{role}]</strong> does not have permission to view the <strong className="text-gray-800 dark:text-slate-200">{navItems.find((n) => n.path === location.pathname)?.name}</strong> workspace.
               </p>
-              <div className="text-xs text-gray-400 border-t border-gray-100 pt-4 w-full max-w-xs font-mono">
+              <div className="text-xs text-gray-400 dark:text-slate-500 border-t border-gray-100 dark:border-slate-800 pt-4 w-full max-w-xs font-mono">
                 RBAC Configuration Active
               </div>
             </div>
