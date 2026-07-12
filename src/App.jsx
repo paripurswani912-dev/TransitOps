@@ -18,7 +18,7 @@ import Settings from './pages/Settings';
 export default function App() {
   return (
     <AuthProvider>
-      <BrowserRouter>
+      <BrowserRouter basename="/TransitOps">
         <Routes>
           {/* Public Authentication Route */}
           <Route path="/login" element={<Login />} />
