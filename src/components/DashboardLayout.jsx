@@ -15,13 +15,7 @@ import {
   Search
 } from 'lucide-react';
 
-// Scoped access definition
-const ROLE_PERMISSIONS = {
-  FleetManager: ['/fleet', '/maintenance', '/settings'],
-  Dispatcher: ['/dashboard', '/dispatch', '/fleet', '/settings'],
-  SafetyOfficer: ['/drivers', '/settings'],
-  FinancialAnalyst: ['/fuel-expenses', '/analytics', '/settings'],
-};
+import { RBAC_MATRIX } from '../constants/rbac';
 
 // Friendly role names
 const ROLE_NAMES = {
@@ -71,8 +65,8 @@ export const DashboardLayout = ({ children }) => {
   // and check strict access for other pages.
   const hasAccess = (path) => {
     if (path === '/dashboard' || path === '/settings') return true;
-    const allowedPaths = ROLE_PERMISSIONS[role] || [];
-    return allowedPaths.includes(path);
+    const permissions = RBAC_MATRIX[role] || {};
+    return permissions[path] !== '—';
   };
 
   const isCurrentPathAllowed = hasAccess(location.pathname);

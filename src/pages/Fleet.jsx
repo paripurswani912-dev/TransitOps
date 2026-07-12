@@ -9,6 +9,7 @@ import {
   setDoc, 
   updateDoc 
 } from 'firebase/firestore';
+import { RBAC_MATRIX } from '../constants/rbac';
 import { 
   Plus, 
   Search, 
@@ -26,7 +27,10 @@ const defaultMockVehicles = [
 ];
 
 export default function Fleet() {
-  const { isMock } = useAuth();
+  const { isMock, role } = useAuth();
+  const permissions = RBAC_MATRIX[role] || {};
+  const isReadOnly = permissions['/fleet'] === 'view';
+
   const [vehicles, setVehicles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -313,16 +317,18 @@ export default function Fleet() {
         </div>
         
         {/* Amber Add Vehicle Button (Magnetic Hover) */}
-        <button
-          ref={btnRef}
-          onMouseMove={handleMouseMove}
-          onMouseLeave={handleMouseLeave}
-          onClick={handleOpenAddDrawer}
-          className="inline-flex items-center justify-center gap-2 rounded-2xl bg-amber-500 px-5 py-3 text-sm font-bold text-gray-900 shadow-md hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 transition-all duration-300 ease-out cursor-pointer select-none shrink-0"
-        >
-          <Plus className="h-4.5 w-4.5 stroke-[2.5]" />
-          <span>Add Vehicle</span>
-        </button>
+        {!isReadOnly && (
+          <button
+            ref={btnRef}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+            onClick={handleOpenAddDrawer}
+            className="inline-flex items-center justify-center gap-2 rounded-2xl bg-amber-500 px-5 py-3 text-sm font-bold text-gray-900 shadow-md hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 transition-all duration-300 ease-out cursor-pointer select-none shrink-0"
+          >
+            <Plus className="h-4.5 w-4.5 stroke-[2.5]" />
+            <span>Add Vehicle</span>
+          </button>
+        )}
       </div>
 
       {/* Database Error Alert */}
@@ -414,7 +420,7 @@ export default function Fleet() {
             >
               Clear Filters
             </button>
-          ) : (
+          ) : !isReadOnly ? (
             <button
               onClick={handleOpenAddDrawer}
               className="inline-flex items-center gap-2 rounded-xl bg-amber-500 px-5 py-2.5 text-xs font-bold text-gray-900 shadow-sm hover:bg-amber-600 transition-colors cursor-pointer"
@@ -422,7 +428,7 @@ export default function Fleet() {
               <Plus className="h-4 w-4 stroke-[2.5]" />
               <span>Add Vehicle</span>
             </button>
-          )}
+          ) : null}
         </div>
       ) : (
         /* Data Table */
@@ -444,8 +450,8 @@ export default function Fleet() {
                 {filteredVehicles.map((v) => (
                   <tr 
                     key={v.regNo} 
-                    onClick={() => handleOpenEditDrawer(v)}
-                    className="hover:bg-amber-50/10 cursor-pointer transition-colors duration-150"
+                    onClick={() => !isReadOnly && handleOpenEditDrawer(v)}
+                    className={`hover:bg-amber-50/10 transition-colors duration-150 ${isReadOnly ? 'cursor-default' : 'cursor-pointer'}`}
                   >
                     {/* Reg No in bold JetBrains Mono */}
                     <td className="px-6 py-4 font-mono font-bold text-gray-900 whitespace-nowrap">{v.regNo}</td>

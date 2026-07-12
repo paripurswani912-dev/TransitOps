@@ -19,6 +19,7 @@ import {
   Info
 } from 'lucide-react';
 import { LOCATIONS } from '../constants/locations';
+import { RBAC_MATRIX } from '../constants/rbac';
 
 // Default mock data for Trips
 const defaultMockTrips = [
@@ -40,7 +41,9 @@ const defaultMockDrivers = [
 ];
 
 export default function Dispatch() {
-  const { isMock } = useAuth();
+  const { isMock, role } = useAuth();
+  const permissions = RBAC_MATRIX[role] || {};
+  const isReadOnly = permissions['/dispatch'] === 'view';
   
   // Collections State
   const [trips, setTrips] = useState([]);
@@ -556,6 +559,17 @@ export default function Dispatch() {
               </div>
             )}
 
+            {/* Read-Only Warning Banner */}
+            {isReadOnly && (
+              <div className="rounded-xl border border-blue-200 bg-blue-50/50 p-4 text-xs text-blue-800 flex items-start gap-2.5">
+                <Info className="h-4.5 w-4.5 text-blue-600 shrink-0 mt-0.5" />
+                <div>
+                  <p className="font-bold">Read-Only Workspace</p>
+                  <p className="text-xs text-blue-600 mt-1">You can review active trip logs and resource allocations, but dispatch commands are locked.</p>
+                </div>
+              </div>
+            )}
+
             {/* Form Fields */}
             <form onSubmit={handleDispatch} className="space-y-4">
               
@@ -566,8 +580,9 @@ export default function Dispatch() {
                   <select
                     value={source}
                     required
+                    disabled={isReadOnly}
                     onChange={(e) => setSource(e.target.value)}
-                    className="w-full rounded-xl border border-gray-200 bg-white py-2.5 px-3 text-sm text-gray-900 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10"
+                    className="w-full rounded-xl border border-gray-200 bg-white py-2.5 px-3 text-sm text-gray-900 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 disabled:bg-gray-50 disabled:text-gray-400 disabled:cursor-not-allowed"
                   >
                     <option value="">-- Select Source --</option>
                     {LOCATIONS.map((loc) => (
@@ -582,8 +597,9 @@ export default function Dispatch() {
                   <select
                     value={destination}
                     required
+                    disabled={isReadOnly}
                     onChange={(e) => setDestination(e.target.value)}
-                    className="w-full rounded-xl border border-gray-200 bg-white py-2.5 px-3 text-sm text-gray-900 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10"
+                    className="w-full rounded-xl border border-gray-200 bg-white py-2.5 px-3 text-sm text-gray-900 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 disabled:bg-gray-50 disabled:text-gray-400 disabled:cursor-not-allowed"
                   >
                     <option value="">-- Select Destination --</option>
                     {LOCATIONS.map((loc) => (
@@ -601,8 +617,9 @@ export default function Dispatch() {
                 <select
                   value={selectedVehicleId}
                   required
+                  disabled={isReadOnly}
                   onChange={(e) => setSelectedVehicleId(e.target.value)}
-                  className="w-full rounded-xl border border-gray-200 bg-white py-2.5 px-3 text-sm text-gray-900 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 font-mono"
+                  className="w-full rounded-xl border border-gray-200 bg-white py-2.5 px-3 text-sm text-gray-900 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 font-mono disabled:bg-gray-50 disabled:text-gray-400 disabled:cursor-not-allowed"
                 >
                   <option value="">-- Select Available Vehicle --</option>
                   {availableVehicles.map((v) => (
@@ -622,12 +639,13 @@ export default function Dispatch() {
                 <select
                   value={selectedDriverId}
                   required
+                  disabled={isReadOnly}
                   onChange={(e) => setSelectedDriverId(e.target.value)}
-                  className="w-full rounded-xl border border-gray-200 bg-white py-2.5 px-3 text-sm text-gray-900 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 font-sans"
+                  className="w-full rounded-xl border border-gray-200 bg-white py-2.5 px-3 text-sm text-gray-900 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 font-sans disabled:bg-gray-50 disabled:text-gray-400 disabled:cursor-not-allowed"
                 >
                   <option value="">-- Select Available Driver --</option>
                   {availableDrivers.map((d) => (
-                    <option key={d.id} value={d.id} className="font-mono">
+                    <option key={d.id} value={d.id} className="font-mono font-medium">
                       {d.name} ({d.licenseCategory}) — rating: {d.safetyScore}/100
                     </option>
                   ))}
@@ -645,10 +663,11 @@ export default function Dispatch() {
                     type="number"
                     required
                     min="1"
+                    disabled={isReadOnly}
                     value={cargoWeight}
                     onChange={(e) => setCargoWeight(e.target.value)}
                     placeholder="e.g. 1500"
-                    className="w-full rounded-xl border border-gray-200 bg-white py-2 px-3 text-sm text-gray-900 placeholder-gray-400 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 font-mono"
+                    className="w-full rounded-xl border border-gray-200 bg-white py-2 px-3 text-sm text-gray-900 placeholder-gray-400 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 font-mono disabled:bg-gray-50 disabled:text-gray-400 disabled:cursor-not-allowed"
                   />
                 </div>
                 <div>
@@ -657,10 +676,11 @@ export default function Dispatch() {
                     type="number"
                     required
                     min="1"
+                    disabled={isReadOnly}
                     value={plannedDistance}
                     onChange={(e) => setPlannedDistance(e.target.value)}
                     placeholder="e.g. 240"
-                    className="w-full rounded-xl border border-gray-200 bg-white py-2 px-3 text-sm text-gray-900 placeholder-gray-400 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 font-mono"
+                    className="w-full rounded-xl border border-gray-200 bg-white py-2 px-3 text-sm text-gray-900 placeholder-gray-400 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 font-mono disabled:bg-gray-50 disabled:text-gray-400 disabled:cursor-not-allowed"
                   />
                 </div>
               </div>
@@ -695,6 +715,7 @@ export default function Dispatch() {
               <div className="flex gap-3 pt-2">
                 <button
                   type="button"
+                  disabled={isReadOnly}
                   onClick={() => {
                     setSource('');
                     setDestination('');
@@ -704,7 +725,7 @@ export default function Dispatch() {
                     setPlannedDistance('');
                     setFormError('');
                   }}
-                  className="flex-1 py-3 text-sm border border-gray-300 rounded-xl font-semibold text-gray-700 bg-white hover:bg-gray-50 transition-all cursor-pointer"
+                  className="flex-1 py-3 text-sm border border-gray-300 rounded-xl font-semibold text-gray-700 bg-white hover:bg-gray-50 transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   Cancel
                 </button>
@@ -714,7 +735,7 @@ export default function Dispatch() {
                   onMouseMove={handleMouseMove}
                   onMouseLeave={handleMouseLeave}
                   type="submit"
-                  disabled={isDispatching || isCapacityExceeded || isSameLocation || !selectedVehicleId || !selectedDriverId || !source || !destination || !cargoWeight || !plannedDistance}
+                  disabled={isReadOnly || isDispatching || isCapacityExceeded || isSameLocation || !selectedVehicleId || !selectedDriverId || !source || !destination || !cargoWeight || !plannedDistance}
                   className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-amber-500 py-3 text-sm font-bold text-gray-900 border border-transparent shadow-sm hover:bg-amber-600 transition-all duration-300 ease-out btn-magnetic disabled:bg-gray-150 disabled:text-gray-400 disabled:cursor-not-allowed cursor-pointer"
                 >
                   {isDispatching ? (
@@ -789,7 +810,7 @@ export default function Dispatch() {
                             {trip.status}
                           </span>
 
-                          {(trip.status === 'Completed' || trip.status === 'Cancelled') && (
+                          {(trip.status === 'Completed' || trip.status === 'Cancelled') && !isReadOnly && (
                             <button
                               onClick={() => handleDeleteTrip(trip)}
                               className="h-6 w-6 rounded-md border border-gray-200 bg-white flex items-center justify-center text-red-500 hover:text-red-700 hover:bg-red-50 transition-colors shadow-xs cursor-pointer ml-1"
@@ -849,7 +870,7 @@ export default function Dispatch() {
                       </div>
 
                       {/* Dispatched Actions */}
-                      {trip.status === 'Dispatched' && completingTripId !== trip.id && (
+                      {trip.status === 'Dispatched' && completingTripId !== trip.id && !isReadOnly && (
                         <div className="mt-4 flex items-center gap-2 border-t border-gray-100 pt-3 font-sans">
                           <button
                             onClick={() => handleCancelTrip(trip)}

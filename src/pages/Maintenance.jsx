@@ -18,6 +18,7 @@ import {
   ArrowRight,
   CheckCircle2
 } from 'lucide-react';
+import { RBAC_MATRIX } from '../constants/rbac';
 
 // Default Mock Data for Maintenance Logs
 const defaultMockMaintenance = [
@@ -33,7 +34,9 @@ const defaultMockVehicles = [
 ];
 
 export default function Maintenance() {
-  const { isMock } = useAuth();
+  const { isMock, role } = useAuth();
+  const permissions = RBAC_MATRIX[role] || {};
+  const isReadOnly = permissions['/maintenance'] === 'view';
   
   // Collections state
   const [logs, setLogs] = useState([]);
@@ -338,6 +341,17 @@ export default function Maintenance() {
               </div>
             )}
 
+            {/* Read-Only Warning Banner */}
+            {isReadOnly && (
+              <div className="rounded-xl border border-blue-200 bg-blue-50/50 p-4 text-xs text-blue-800 flex items-start gap-2.5">
+                <Info className="h-4.5 w-4.5 text-blue-600 shrink-0 mt-0.5" />
+                <div>
+                  <p className="font-bold">Read-Only Workspace</p>
+                  <p className="text-xs text-blue-600 mt-1">You can review service history and active maintenance tasks, but logging new records is locked.</p>
+                </div>
+              </div>
+            )}
+
             <form onSubmit={handleSave} className="space-y-4">
               
               {/* Vehicle Dropdown (All Vehicles shown with current status label) */}
@@ -346,8 +360,9 @@ export default function Maintenance() {
                 <select
                   value={selectedVehicleId}
                   required
+                  disabled={isReadOnly}
                   onChange={(e) => setSelectedVehicleId(e.target.value)}
-                  className="w-full rounded-xl border border-gray-200 bg-white py-2.5 px-3 text-sm text-gray-900 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 font-mono"
+                  className="w-full rounded-xl border border-gray-200 bg-white py-2.5 px-3 text-sm text-gray-900 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 font-mono disabled:bg-gray-50 disabled:text-gray-400 disabled:cursor-not-allowed"
                 >
                   <option value="">-- Select Vehicle (All) --</option>
                   {vehicles.map((v) => (
@@ -364,8 +379,9 @@ export default function Maintenance() {
                   <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 font-mono mb-1.5">Service Type</label>
                   <select
                     value={serviceType}
+                    disabled={isReadOnly}
                     onChange={(e) => setServiceType(e.target.value)}
-                    className="w-full rounded-xl border border-gray-200 bg-white py-2.5 px-3 text-sm text-gray-900 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 font-sans"
+                    className="w-full rounded-xl border border-gray-200 bg-white py-2.5 px-3 text-sm text-gray-900 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 font-sans disabled:bg-gray-50 disabled:text-gray-400 disabled:cursor-not-allowed"
                   >
                     <option value="Oil Change">Oil Change</option>
                     <option value="Engine Repair">Engine Repair</option>
@@ -381,10 +397,11 @@ export default function Maintenance() {
                     <input
                       type="text"
                       required
+                      disabled={isReadOnly}
                       value={customServiceType}
                       onChange={(e) => setCustomServiceType(e.target.value)}
                       placeholder="e.g. Brake Replacement"
-                      className="w-full rounded-xl border border-gray-200 bg-white py-2 px-3 text-sm text-gray-900 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 font-sans"
+                      className="w-full rounded-xl border border-gray-200 bg-white py-2 px-3 text-sm text-gray-900 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 font-sans disabled:bg-gray-50 disabled:text-gray-400 disabled:cursor-not-allowed"
                     />
                   </div>
                 )}
@@ -399,10 +416,11 @@ export default function Maintenance() {
                     required
                     min="0"
                     step="0.01"
+                    disabled={isReadOnly}
                     value={cost}
                     onChange={(e) => setCost(e.target.value)}
                     placeholder="e.g. 250"
-                    className="w-full rounded-xl border border-gray-200 bg-white py-2 px-3 text-sm text-gray-900 placeholder-gray-400 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 font-mono"
+                    className="w-full rounded-xl border border-gray-200 bg-white py-2 px-3 text-sm text-gray-900 placeholder-gray-400 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 font-mono disabled:bg-gray-50 disabled:text-gray-400 disabled:cursor-not-allowed"
                   />
                 </div>
                 <div>
@@ -410,9 +428,10 @@ export default function Maintenance() {
                   <input
                     type="date"
                     required
+                    disabled={isReadOnly}
                     value={date}
                     onChange={(e) => setDate(e.target.value)}
-                    className="w-full rounded-xl border border-gray-200 bg-white py-2 px-3 text-sm text-gray-900 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 font-mono"
+                    className="w-full rounded-xl border border-gray-200 bg-white py-2 px-3 text-sm text-gray-900 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 font-mono disabled:bg-gray-50 disabled:text-gray-400 disabled:cursor-not-allowed"
                   />
                 </div>
               </div>
@@ -422,8 +441,9 @@ export default function Maintenance() {
                 <label className="block text-xs font-bold uppercase tracking-wider text-gray-500 font-mono mb-1.5">Maintenance Status</label>
                 <select
                   value={status}
+                  disabled={isReadOnly}
                   onChange={(e) => setStatus(e.target.value)}
-                  className="w-full rounded-xl border border-gray-200 bg-white py-2.5 px-3 text-sm text-gray-900 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 font-sans"
+                  className="w-full rounded-xl border border-gray-200 bg-white py-2.5 px-3 text-sm text-gray-900 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 font-sans disabled:bg-gray-50 disabled:text-gray-400 disabled:cursor-not-allowed"
                 >
                   <option value="In Progress">In Progress</option>
                   <option value="Completed">Completed</option>
@@ -436,7 +456,7 @@ export default function Maintenance() {
                 onMouseMove={handleMouseMove}
                 onMouseLeave={handleMouseLeave}
                 type="submit"
-                disabled={isSaving}
+                disabled={isReadOnly || isSaving}
                 className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-amber-500 py-3 text-sm font-bold text-gray-900 border border-transparent shadow-sm hover:bg-amber-600 transition-all duration-300 ease-out btn-magnetic disabled:bg-gray-150 disabled:text-gray-400 disabled:cursor-not-allowed cursor-pointer"
               >
                 {isSaving ? (
@@ -566,11 +586,11 @@ export default function Maintenance() {
 
                             {/* Mark complete action button */}
                             <td className="px-6 py-4 whitespace-nowrap text-center text-xs">
-                              {log.status === 'In Progress' ? (
+                              {log.status === 'In Progress' && !isReadOnly ? (
                                 <button
                                   onClick={() => handleMarkComplete(log)}
                                   disabled={updatingLogId === log.id}
-                                  className="inline-flex items-center gap-1 px-3 py-1.5 bg-emerald-500 text-white rounded-lg font-bold hover:bg-emerald-600 transition-colors shadow-xs cursor-pointer disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed"
+                                  className="inline-flex items-center gap-1 px-3 py-1.5 bg-emerald-500 text-white rounded-lg font-bold hover:bg-emerald-600 transition-colors shadow-xs cursor-pointer disabled:bg-gray-150 disabled:text-gray-400 disabled:cursor-not-allowed"
                                 >
                                   {updatingLogId === log.id ? (
                                     <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -579,8 +599,10 @@ export default function Maintenance() {
                                   )}
                                   <span>Mark Complete</span>
                                 </button>
+                              ) : log.status === 'In Progress' ? (
+                                <span className="text-gray-400 font-medium italic text-[11px]">In Progress</span>
                               ) : (
-                                <span className="text-gray-400 font-mono text-[10px]">Closed</span>
+                                <span className="text-emerald-600 font-semibold text-[11px]">Service Completed</span>
                               )}
                             </td>
 
