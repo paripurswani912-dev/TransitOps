@@ -159,7 +159,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const signUp = async (email, password, name) => {
+  const signUp = async (email, password, name, role = 'Dispatcher') => {
     if (isLocked) {
       throw new Error("Invalid credentials — Account locked after 5 failed attempts");
     }
@@ -175,7 +175,7 @@ export const AuthProvider = ({ children }) => {
         uid: 'mock-uid-' + Math.random().toString(36).substring(2, 9),
         name,
         email,
-        role: 'Dispatcher', // Default role for signup
+        role, // User selected role
         status: 'Active'
       };
       
@@ -198,7 +198,7 @@ export const AuthProvider = ({ children }) => {
         uid: fbUser.uid,
         name: name,
         email: email,
-        role: 'Dispatcher', // Default placeholder role for signup
+        role, // User selected role
         status: 'Active'
       };
       

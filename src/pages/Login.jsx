@@ -49,9 +49,9 @@ export default function Login() {
         await signIn(email, password, demoRole);
         navigate('/dashboard');
       } else {
-        // Sign up (role defaults to 'Dispatcher' as per schema requirements)
-        await signUp(email, password, name);
-        setSuccessMessage("Account created successfully as 'Dispatcher'! Redirecting...");
+        // Sign up using custom chosen role (defaults to demoRole state value)
+        await signUp(email, password, name, demoRole);
+        setSuccessMessage(`Account created successfully as '${demoRole}'! Redirecting...`);
         setTimeout(() => {
           navigate('/dashboard');
         }, 1500);
@@ -299,29 +299,30 @@ export default function Login() {
               </div>
             </div>
 
-            {/* ROLE DROPDOWN (ONLY SHOWS FOR SIGN IN AS RBAC DEMO HELPER) */}
-            {mode === 'signin' && (
-              <div>
-                <label htmlFor="login-role" className="block text-xs font-semibold uppercase tracking-wider text-gray-500 font-mono mb-1.5">
-                  Demo RBAC Role (Overrides DB for testing)
-                </label>
-                <select
-                  id="login-role"
-                  value={demoRole}
-                  onChange={(e) => setDemoRole(e.target.value)}
-                  disabled={isLocked || submitting}
-                  className="w-full rounded-2xl border border-gray-200 bg-white py-3 px-4 text-sm text-gray-900 outline-none transition-all focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 font-mono disabled:bg-gray-50 disabled:cursor-not-allowed"
-                >
-                  <option value="FleetManager">FleetManager (Fleet, Maintenance)</option>
-                  <option value="Dispatcher">Dispatcher (Dashboard, Trips)</option>
-                  <option value="SafetyOfficer">SafetyOfficer (Drivers, Compliance)</option>
-                  <option value="FinancialAnalyst">FinancialAnalyst (Fuel, Analytics)</option>
-                </select>
-                <p className="mt-1.5 text-[10px] text-gray-400 leading-normal font-sans">
-                  * Select the role to override during sign-in to quickly test locked and unlocked views.
-                </p>
-              </div>
-            )}
+            {/* ROLE DROPDOWN (SHOWS FOR SIGNUP & SIGNIN WITH CONTEXT LABELS) */}
+            <div>
+              <label htmlFor="login-role" className="block text-xs font-semibold uppercase tracking-wider text-gray-500 font-mono mb-1.5">
+                {mode === 'signin' ? 'Demo RBAC Role (Overrides DB for testing)' : 'Account Role'}
+              </label>
+              <select
+                id="login-role"
+                value={demoRole}
+                onChange={(e) => setDemoRole(e.target.value)}
+                disabled={isLocked || submitting}
+                className="w-full rounded-2xl border border-gray-200 bg-white py-3 px-4 text-sm text-gray-900 outline-none transition-all focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 font-mono disabled:bg-gray-50 disabled:cursor-not-allowed"
+              >
+                <option value="FleetManager">FleetManager (Fleet, Maintenance)</option>
+                <option value="Dispatcher">Dispatcher (Dashboard, Trips)</option>
+                <option value="SafetyOfficer">SafetyOfficer (Drivers, Compliance)</option>
+                <option value="FinancialAnalyst">FinancialAnalyst (Fuel, Analytics)</option>
+              </select>
+              <p className="mt-1.5 text-[10px] text-gray-400 leading-normal font-sans">
+                {mode === 'signin' 
+                  ? '* Select the role to override during sign-in to quickly test locked and unlocked views.'
+                  : '* Choose your functional role. This determines your workspace access rights.'
+                }
+              </p>
+            </div>
 
             {/* REMEMBER ME CHECKBOX */}
             <div className="flex items-center">
