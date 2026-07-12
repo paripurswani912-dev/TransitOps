@@ -11,13 +11,14 @@ import {
   BarChart3, 
   Settings, 
   LogOut, 
-  ShieldAlert 
+  ShieldAlert,
+  Search
 } from 'lucide-react';
 
 // Scoped access definition
 const ROLE_PERMISSIONS = {
   FleetManager: ['/fleet', '/maintenance', '/settings'],
-  Dispatcher: ['/dashboard', '/dispatch', '/settings'],
+  Dispatcher: ['/dashboard', '/dispatch', '/fleet', '/settings'],
   SafetyOfficer: ['/drivers', '/settings'],
   FinancialAnalyst: ['/fuel-expenses', '/analytics', '/settings'],
 };
@@ -28,6 +29,15 @@ const ROLE_NAMES = {
   Dispatcher: 'Dispatcher',
   SafetyOfficer: 'Safety Officer',
   FinancialAnalyst: 'Financial Analyst',
+};
+
+const getInitials = (name) => {
+  if (!name) return 'RK';
+  const parts = name.split(' ');
+  if (parts.length >= 2) {
+    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+  }
+  return name.slice(0, 2).toUpperCase();
 };
 
 export const DashboardLayout = ({ children }) => {
@@ -48,7 +58,7 @@ export const DashboardLayout = ({ children }) => {
     { name: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
     { name: 'Fleet', path: '/fleet', icon: Truck },
     { name: 'Drivers', path: '/drivers', icon: Users },
-    { name: 'Dispatch', path: '/dispatch', icon: Send },
+    { name: 'Trips', path: '/dispatch', icon: Send },
     { name: 'Maintenance', path: '/maintenance', icon: Wrench },
     { name: 'Fuel & Expenses', path: '/fuel-expenses', icon: Fuel },
     { name: 'Analytics', path: '/analytics', icon: BarChart3 },
@@ -149,13 +159,38 @@ export const DashboardLayout = ({ children }) => {
       <div className="flex flex-1 flex-col overflow-hidden">
         {/* Top Header */}
         <header className="flex h-16 items-center justify-between border-b border-gray-200 bg-white px-8">
-          <h1 className="text-lg font-semibold text-gray-900 tracking-tight">
-            {navItems.find((n) => n.path === location.pathname)?.name || 'TransitOps Portal'}
-          </h1>
-          <div className="flex items-center space-x-4">
-            <span className="text-xs text-gray-500 font-mono bg-gray-100 border border-gray-200 px-2.5 py-1 rounded-full">
-              System: Connected (Mock DB)
-            </span>
+          {/* Search input (left) */}
+          <div className="flex items-center flex-1 max-w-xs md:max-w-md">
+            <div className="relative w-full">
+              <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                <Search className="h-4 w-4" />
+              </span>
+              <input
+                type="text"
+                placeholder="Search resources, vehicles..."
+                className="w-full rounded-2xl border border-gray-200 bg-gray-50/50 py-2 pl-10 pr-4 text-sm text-gray-900 placeholder-gray-400 outline-none transition-all focus:border-amber-500 focus:ring-2 focus:ring-amber-500/10 font-sans"
+              />
+            </div>
+          </div>
+
+          {/* User Profile Info (right) */}
+          <div className="flex items-center space-x-3.5">
+            <div className="flex flex-col items-end text-right">
+              <div className="text-sm font-semibold text-gray-800 flex items-center gap-1.5">
+                <span>{user?.name || 'Raven K.'}</span>
+                <span className="rounded bg-amber-500/10 px-2 py-0.5 text-[10px] font-bold text-amber-600 font-mono tracking-wider">
+                  {role ? ROLE_NAMES[role] || role : 'Dispatcher'}
+                </span>
+              </div>
+              {user?.email && (
+                <div className="text-[10px] text-gray-400 font-mono">{user.email}</div>
+              )}
+            </div>
+            
+            {/* Avatar Circle */}
+            <div className="h-9 w-9 rounded-full bg-amber-500 text-gray-950 flex items-center justify-center font-bold text-sm tracking-tighter">
+              {getInitials(user?.name || user?.email || 'Raven K.')}
+            </div>
           </div>
         </header>
 
