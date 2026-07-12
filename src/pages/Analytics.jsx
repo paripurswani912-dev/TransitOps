@@ -29,26 +29,13 @@ import {
 } from 'recharts';
 
 // Default Fallback Mock Data
-const defaultMockVehicles = [
-  { regNo: 'NY-4921-TR', name: 'Titan Hauler 1', model: 'Volvo VNL 860', type: 'Truck', capacity: 36000, odometer: 142500, acqCost: 125000, status: 'On Trip' },
-  { regNo: 'CA-8891-BX', name: 'Metro Cargo 3', model: 'Isuzu NPR-HD', type: 'Van', capacity: 6500, odometer: 89200, acqCost: 45000, status: 'Available' },
-  { regNo: 'TX-5201-FB', name: 'Heavy Carrier 7', model: 'Peterbilt 579', type: 'Truck', capacity: 40000, odometer: 210400, acqCost: 140000, status: 'In Shop' }
-];
+const defaultMockVehicles = [];
 
-const defaultMockTrips = [
-  { id: 'TR-1001', source: 'New York Hub', destination: 'Boston Warehouse A', vehicleId: 'NY-4921-TR', driverId: 'mock-driver-2', cargoWeight: 18500, plannedDistance: 346, status: 'Dispatched', createdAt: new Date(Date.now() - 3600000 * 2).toISOString() },
-  { id: 'TR-1002', source: 'Chicago Yard 3', destination: 'Detroit Terminal', vehicleId: 'CA-8891-BX', driverId: 'mock-driver-1', cargoWeight: 4200, plannedDistance: 450, status: 'Completed', createdAt: new Date(Date.now() - 3600000 * 24).toISOString(), finalOdometer: 89650, fuelConsumed: 125 }
-];
+const defaultMockTrips = [];
 
-const defaultMockMaintenance = [
-  { id: 'M-501', vehicleId: 'TX-5201-FB', serviceType: 'Transmission Repair', cost: 1250, date: '2026-07-10', status: 'In Progress' },
-  { id: 'M-502', vehicleId: 'CA-8891-BX', serviceType: 'Oil Change', cost: 180, date: '2026-07-08', status: 'Completed' }
-];
+const defaultMockMaintenance = [];
 
-const defaultMockFuelLogs = [
-  { id: 'FL-001', vehicleId: 'CA-8891-BX', liters: 125, cost: 181.25, date: '2026-07-08' },
-  { id: 'FL-002', vehicleId: 'NY-4921-TR', liters: 340, cost: 493.00, date: '2026-07-10' }
-];
+const defaultMockFuelLogs = [];
 
 export default function Analytics() {
   const { isMock } = useAuth();

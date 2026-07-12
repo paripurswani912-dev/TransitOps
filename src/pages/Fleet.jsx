@@ -26,11 +26,7 @@ import {
 } from 'lucide-react';
 
 // Default mock vehicles if none exist in localStorage
-const defaultMockVehicles = [
-  { regNo: 'NY-4921-TR', name: 'Titan Hauler 1', model: 'Volvo VNL 860', type: 'Truck', capacity: 36000, odometer: 142500, acqCost: 125000, status: 'On Trip' },
-  { regNo: 'CA-8891-BX', name: 'Metro Cargo 3', model: 'Isuzu NPR-HD', type: 'Van', capacity: 6500, odometer: 89200, acqCost: 45000, status: 'Available' },
-  { regNo: 'TX-5201-FB', name: 'Heavy Carrier 7', model: 'Peterbilt 579', type: 'Truck', capacity: 40000, odometer: 210400, acqCost: 140000, status: 'In Shop' }
-];
+const defaultMockVehicles = [];
 
 export default function Fleet() {
   const { isMock, role } = useAuth();

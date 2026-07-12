@@ -22,15 +22,9 @@ import {
 } from 'lucide-react';
 
 // Default mock data for testing/demo fallback
-const defaultMockFuelLogs = [
-  { id: 'FL-001', vehicleId: 'NY-4921-TR', liters: 120, cost: 186.50, date: '2026-07-11' },
-  { id: 'FL-002', vehicleId: 'CA-8891-BX', liters: 45, cost: 72.90, date: '2026-07-10' }
-];
+const defaultMockFuelLogs = [];
 
-const defaultMockExpenses = [
-  { id: 'EXP-001', tripId: 'T-101', vehicleId: 'NY-4921-TR', toll: 45.00, other: 15.00, date: '2026-07-11' },
-  { id: 'EXP-002', tripId: '', vehicleId: 'CA-8891-BX', toll: 0.00, other: 35.00, date: '2026-07-10' }
-];
+const defaultMockExpenses = [];
 
 export default function FuelExpenses() {
   const { isMock } = useAuth();

@@ -22,23 +22,11 @@ import { LOCATIONS } from '../constants/locations';
 import { RBAC_MATRIX } from '../constants/rbac';
 
 // Default mock data for Trips
-const defaultMockTrips = [
-  { id: 'TR-1001', source: 'New York Hub', destination: 'Boston Warehouse A', vehicleId: 'NY-4921-TR', driverId: 'mock-driver-2', cargoWeight: 18500, plannedDistance: 346, status: 'Dispatched', createdAt: new Date(Date.now() - 3600000 * 2).toISOString() },
-  { id: 'TR-1002', source: 'Chicago Yard 3', destination: 'Detroit Terminal', vehicleId: 'CA-8891-BX', driverId: 'mock-driver-1', cargoWeight: 4200, plannedDistance: 450, status: 'Completed', createdAt: new Date(Date.now() - 3600000 * 24).toISOString(), finalOdometer: 89650, fuelConsumed: 125 }
-];
+const defaultMockTrips = [];
 
-const defaultMockVehicles = [
-  { regNo: 'NY-4921-TR', name: 'Titan Hauler 1', model: 'Volvo VNL 860', type: 'Truck', capacity: 36000, odometer: 142500, acqCost: 125000, status: 'On Trip' },
-  { regNo: 'CA-8891-BX', name: 'Metro Cargo 3', model: 'Isuzu NPR-HD', type: 'Van', capacity: 6500, odometer: 89200, acqCost: 45000, status: 'Available' },
-  { regNo: 'TX-5201-FB', name: 'Heavy Carrier 7', model: 'Peterbilt 579', type: 'Truck', capacity: 40000, odometer: 210400, acqCost: 140000, status: 'In Shop' }
-];
+const defaultMockVehicles = [];
 
-const defaultMockDrivers = [
-  { id: 'mock-driver-1', name: 'Marcus Vance', licenseNo: 'DL-99218-A', licenseCategory: 'HMV', licenseExpiry: '2028-11-14', contact: '+1 (555) 123-4567', safetyScore: 98, status: 'Available', tripCompletion: 95 },
-  { id: 'mock-driver-2', name: 'Sarah Jenkins', licenseNo: 'DL-88214-B', licenseCategory: 'LMV', licenseExpiry: '2027-04-20', contact: '+1 (555) 987-6543', safetyScore: 94, status: 'On Trip', tripCompletion: 100 },
-  { id: 'mock-driver-3', name: 'Robert Chen', licenseNo: 'DL-44109-A', licenseCategory: 'HMV', licenseExpiry: '2026-09-05', contact: '+1 (555) 456-7890', safetyScore: 89, status: 'Off Duty', tripCompletion: 88 },
-  { id: 'mock-driver-4', name: 'Dave Miller', licenseNo: 'DL-22105-X', licenseCategory: 'MMV', licenseExpiry: '2025-03-10', contact: '+1 (555) 222-3333', safetyScore: 75, status: 'Suspended', tripCompletion: 60 }
-];
+const defaultMockDrivers = [];
 
 export default function Dispatch() {
   const { isMock, role } = useAuth();

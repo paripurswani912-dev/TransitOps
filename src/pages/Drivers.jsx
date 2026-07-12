@@ -21,12 +21,7 @@ import {
 } from 'lucide-react';
 
 // Default mock drivers if none exist in localStorage
-const defaultMockDrivers = [
-  { id: 'mock-driver-1', name: 'Marcus Vance', licenseNo: 'DL-99218-A', licenseCategory: 'HMV', licenseExpiry: '2028-11-14', contact: '+1 (555) 123-4567', safetyScore: 98, status: 'Available', tripCompletion: 95 },
-  { id: 'mock-driver-2', name: 'Sarah Jenkins', licenseNo: 'DL-88214-B', licenseCategory: 'LMV', licenseExpiry: '2027-04-20', contact: '+1 (555) 987-6543', safetyScore: 94, status: 'On Trip', tripCompletion: 100 },
-  { id: 'mock-driver-3', name: 'Robert Chen', licenseNo: 'DL-44109-A', licenseCategory: 'HMV', licenseExpiry: '2026-09-05', contact: '+1 (555) 456-7890', safetyScore: 89, status: 'Off Duty', tripCompletion: 88 },
-  { id: 'mock-driver-4', name: 'Dave Miller', licenseNo: 'DL-22105-X', licenseCategory: 'MMV', licenseExpiry: '2025-03-10', contact: '+1 (555) 222-3333', safetyScore: 75, status: 'Suspended', tripCompletion: 60 }
-];
+const defaultMockDrivers = [];
 
 export default function Drivers() {
   const { isMock, role } = useAuth();
