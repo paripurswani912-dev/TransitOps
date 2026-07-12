@@ -43,6 +43,29 @@ export const AuthProvider = ({ children }) => {
     return JSON.parse(stored);
   };
 
+  // Wipe out previous pre-seeded local storage data once to start 100% clean
+  useEffect(() => {
+    const hasWipedSeed = localStorage.getItem('has_wiped_preseed_v2');
+    if (!hasWipedSeed) {
+      localStorage.removeItem('mock_vehicles');
+      localStorage.removeItem('mock_drivers');
+      localStorage.removeItem('mock_trips');
+      localStorage.removeItem('mock_maintenance');
+      localStorage.removeItem('mock_fuel_logs');
+      localStorage.removeItem('mock_expenses');
+      localStorage.removeItem('mock_general_settings');
+      localStorage.setItem('has_wiped_preseed_v2', 'true');
+      
+      window.dispatchEvent(new Event('mock-vehicles-updated'));
+      window.dispatchEvent(new Event('mock-drivers-updated'));
+      window.dispatchEvent(new Event('mock-trips-updated'));
+      window.dispatchEvent(new Event('mock-maintenance-updated'));
+      window.dispatchEvent(new Event('mock-fuel-logs-updated'));
+      window.dispatchEvent(new Event('mock-expenses-updated'));
+      window.dispatchEvent(new Event('mock-settings-updated'));
+    }
+  }, []);
+
   useEffect(() => {
     if (isMock) {
       const sessionUser = localStorage.getItem('mock_session_user');

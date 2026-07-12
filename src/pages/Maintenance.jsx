@@ -21,17 +21,10 @@ import {
 import { RBAC_MATRIX } from '../constants/rbac';
 
 // Default Mock Data for Maintenance Logs
-const defaultMockMaintenance = [
-  { id: 'M-501', vehicleId: 'TX-5201-FB', serviceType: 'Transmission Repair', cost: 1250, date: '2026-07-10', status: 'In Progress' },
-  { id: 'M-502', vehicleId: 'CA-8891-BX', serviceType: 'Oil Change', cost: 180, date: '2026-07-08', status: 'Completed' }
-];
+const defaultMockMaintenance = [];
 
 // Fallback Mock Vehicles
-const defaultMockVehicles = [
-  { regNo: 'NY-4921-TR', name: 'Titan Hauler 1', model: 'Volvo VNL 860', type: 'Truck', capacity: 36000, odometer: 142500, acqCost: 125000, status: 'On Trip' },
-  { regNo: 'CA-8891-BX', name: 'Metro Cargo 3', model: 'Isuzu NPR-HD', type: 'Van', capacity: 6500, odometer: 89200, acqCost: 45000, status: 'Available' },
-  { regNo: 'TX-5201-FB', name: 'Heavy Carrier 7', model: 'Peterbilt 579', type: 'Truck', capacity: 40000, odometer: 210400, acqCost: 140000, status: 'In Shop' }
-];
+const defaultMockVehicles = [];
 
 export default function Maintenance() {
   const { isMock, role } = useAuth();
